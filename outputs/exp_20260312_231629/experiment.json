@@ -1,0 +1,51 @@
+{
+  "experiment_id": "exp_20260312_231629",
+  "timestamp": "2026-03-12T23:16:29.614912",
+  "dataset": {
+    "name": "video_only",
+    "batch_size": 1,
+    "num_samples": "None"
+  },
+  "model": {
+    "name": "Qwen3-VL-8B-Instruct",
+    "precision": {
+      "dtype": "float16"
+    },
+    "generation": {
+      "max_new_tokens": 420,
+      "do_sample": false,
+      "repetition_penalty": 1.1
+    }
+  },
+  "prompt": {
+    "system": "",
+    "user": "You are analyzing a short video showing a single scene evolving over time.\n\nFollow these steps:\n\n1. Identify the main people, objects, and actions visible at the beginning of the video.\n2. Observe how people or objects move or interact as the video progresses.\n3. Note any visible changes such as approaching, physical contact, pushing, falling, or objects being moved.\n\nFocus only on clearly observable actions and interactions.\n\nImportant rules:\n- Base your description only on visible evidence.\n- Do not speculate about causes, intentions, or outcomes.\n- Avoid interpreting emotions or motivations.\n- Use neutral, objective language describing only observable actions.\n\nFinally, write exactly 6 sentences describing what happens in the scene over time.\nDo not mention frames, images, timestamps, or the word \"video\".\n"
+  },
+  "runtime": {
+    "seed": 42,
+    "deterministic": true,
+    "precision": {
+      "autocast": false
+    },
+    "cuda": {
+      "allow_tf32": true
+    },
+    "debug": {
+      "verbose": false
+    }
+  },
+  "task": "captioning",
+  "video": {
+    "input_mode": "full",
+    "output_level": "video",
+    "fps": 1,
+    "sampling": {
+      "type": "uniform",
+      "manual_frame_map_path": "Classification_DB/tmp_img/manual_frames.json",
+      "fps": 1
+    },
+    "aggregation": {
+      "type": "multi"
+    }
+  }
+}

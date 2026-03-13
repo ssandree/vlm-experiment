@@ -1,0 +1,42 @@
+# configs/prompt/fps_captioning_prompt.yaml
+# This image is composed of four tiles, each of which is a sequential frame from a CCTV video. The frames are ordered from top-left → top-right → bottom-left → bottom-right. Describe what is happening over time.
+
+version: v0.1
+prompt_type: video_only
+language: en
+
+system_prompt: |
+  
+user_prompt: |
+  You are analyzing a sequence of frames sampled from the same video.
+
+  The frames show the same scene evolving over time, but the number of frames and the time gap between them may vary.
+
+  Follow these steps carefully:
+
+  1. Identify the main individuals visible in the scene and track them across the sequence.
+  2. Describe any visible movements or interactions between them.
+  3. Note whether actions such as approaching, physical contact, or falling occur.
+
+  Important rules:
+  - Focus only on clearly observable actions.
+  - Avoid speculating about causes or outcomes.
+  - If an action is ambiguous, describe it neutrally.
+  - Because frames may be sparsely sampled, describe only actions that are clearly visible in the provided sequence.
+
+  Finally, write a 5–8 sentence description of the visible sequence of events in the scene.
+  Focus on what can be directly observed rather than constructing a dramatic story.
+
+  Do not mention frames or images.
+  Describe the sequence of observable actions in the scene.
+
+  If a visible interaction may lead to someone falling or collapsing,
+  describe it as a possible interaction rather than assuming it was accidental.
+
+  Focus on actions between people and how the situation changes over time.
+
+output_constraints:
+  style: factual
+  length: single_sentence
+  speculation: disallowed
+  hallucination: minimized

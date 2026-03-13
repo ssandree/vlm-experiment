@@ -1,0 +1,29 @@
+# configs/model/qwen3_vl_8b.yaml
+
+name: Qwen3-VL-8B-Instruct
+# root: Qwen3-VL-8B-Instruct   # model_root 기준 상대경로
+root: "Qwen3-VL-8B-Instruct/models--Qwen--Qwen3-VL-8B-Instruct/snapshots/0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
+framework: transformers
+trust_remote_code: true
+
+precision:
+  dtype: float16
+
+# HuggingFace generate() 인자 그대로 전달. do_sample: true 일 때만 temperature, top_p, top_k 적용
+generation:
+  max_new_tokens: 420   # grounding 시 다중 bbox JSON 출력 (128은 truncation으로 일부만 저장됨)
+  do_sample: false
+  repetition_penalty: 1.1   # 반복 토큰 억제 (없으면 "!!!!!!..." 같은 collapse 발생)
+  # do_sample: true 로 바꾸면 아래 사용 가능:
+  # temperature: 0.7
+  # top_p: 0.9
+  # top_k: 50
+
+vision:
+  image_size: 336        # 224 | 336 | 448
+  max_images: 1          # multi-image 대비용
+
+runtime:
+  device_map: auto       # transformers
+  use_flash_attn: true   # 지원 시
+

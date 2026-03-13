@@ -1,0 +1,50 @@
+{
+  "experiment_id": "exp_20260312_230518",
+  "timestamp": "2026-03-12T23:05:18.862244",
+  "dataset": {
+    "name": "video_only",
+    "batch_size": 1,
+    "num_samples": "None"
+  },
+  "model": {
+    "name": "Qwen3-VL-8B-Instruct",
+    "precision": {
+      "dtype": "float16"
+    },
+    "generation": {
+      "max_new_tokens": 420,
+      "do_sample": false,
+      "repetition_penalty": 1.1
+    }
+  },
+  "prompt": {
+    "system": "",
+    "user": "You are analyzing four sequential frames from the same video.\n\nThe frames show the same scene evolving over time.\n\nFollow these steps carefully:\n\n1. Identify the main individuals in the scene and track them across frames.\n2. Describe any visible movements or interactions between them.\n3. Note whether actions such as approaching, physical contact, or falling occur.\n\nImportant rules:\n- Focus only on clearly observable actions.\n- Avoid speculating about causes or outcomes.\n- If an action is ambiguous, describe it neutrally.\n\nFinally, write a 5–8 sentence description of the visible sequence of events in the scene.\nFocus on what can be directly observed rather than constructing a dramatic story.\n\nDo not mention frames or images.\nDescribe the sequence of observable actions in the scene.\n\nIf a visible interaction likely leads to someone falling or collapsing,\ndescribe it as a possible interaction rather than assuming it was accidental.\n\nFocus on actions between people and how the situation changes over time.\n"
+  },
+  "runtime": {
+    "seed": 42,
+    "deterministic": true,
+    "precision": {
+      "autocast": false
+    },
+    "cuda": {
+      "allow_tf32": true
+    },
+    "debug": {
+      "verbose": false
+    }
+  },
+  "video": {
+    "input_mode": "sampling",
+    "output_level": "video",
+    "fps": 1,
+    "sampling": {
+      "type": "uniform",
+      "manual_frame_map_path": "Classification_DB/tmp_img/manual_frames.json",
+      "fps": 1
+    },
+    "aggregation": {
+      "type": "multi"
+    }
+  }
+}

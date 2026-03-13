@@ -1,0 +1,8 @@
+# configs/test_dataset/anomaly_cctv.yaml
+mode: anomaly_cctv
+
+paths:
+  # server
+  parquet: VLM_DB/Classification_DB/anomaly_CCTV/
+  # local
+  # parquet: VLM_DB/Classification_DB/Anomaly_CCTV/

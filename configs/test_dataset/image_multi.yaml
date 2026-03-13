@@ -1,0 +1,22 @@
+# image_multi.yaml
+# 여러 이미지를 그룹으로 묶어, 그룹당 하나의 추론 결과 생성 (multi-image input)
+# run_multi_image_inference 에서 사용
+mode: image_multi
+
+paths:
+  image_groups:
+    # 그룹 1: Arson041 4장 → 1개 추론
+    - - Classification_DB/tmp_img/evt_frames/Arson041_x264_f00.jpg
+      - Classification_DB/tmp_img/evt_frames/Arson041_x264_f01.jpg
+      - Classification_DB/tmp_img/evt_frames/Arson041_x264_f02.jpg
+      - Classification_DB/tmp_img/evt_frames/Arson041_x264_f03.jpg
+    # 그룹 2: Assault042 4장 → 1개 추론
+    - - Classification_DB/tmp_img/evt_frames/Assault042_x264_f00.jpg
+      - Classification_DB/tmp_img/evt_frames/Assault042_x264_f01.jpg
+      - Classification_DB/tmp_img/evt_frames/Assault042_x264_f02.jpg
+      - Classification_DB/tmp_img/evt_frames/Assault042_x264_f03.jpg
+    # 그룹 3: Robbery146 4장 → 1개 추론
+    - - Classification_DB/tmp_img/evt_frames/Robbery146_x264_f00.jpg
+      - Classification_DB/tmp_img/evt_frames/Robbery146_x264_f01.jpg
+      - Classification_DB/tmp_img/evt_frames/Robbery146_x264_f02.jpg
+      - Classification_DB/tmp_img/evt_frames/Robbery146_x264_f03.jpg

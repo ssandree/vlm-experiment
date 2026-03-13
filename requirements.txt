@@ -1,0 +1,12 @@
+torch
+transformers
+accelerate
+pyyaml
+pillow
+numpy
+scipy
+tqdm
+opencv-python
+scikit-image
+pycocotools
+ultralytics

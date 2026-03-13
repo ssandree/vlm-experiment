@@ -1,0 +1,46 @@
+# configs/prompt/grid_captioning_prompt.yaml
+# This image is composed of four tiles, each of which is a sequential frame from a CCTV video. The frames are ordered from top-left → top-right → bottom-left → bottom-right. Describe what is happening over time.
+
+version: v0.1
+prompt_type: image_only
+language: en
+
+system_prompt: |
+  
+user_prompt: |
+  You are analyzing four sequential frames from the same video.
+
+  The frames show the same scene evolving over time.
+
+  Frame order:
+  top-left → top-right → bottom-left → bottom-right
+
+  Treat each tile as a different moment in time.
+
+  Follow these steps carefully:
+
+  1. Identify the main individuals appearing across the tiles.
+  2. Track how their positions or actions change between tiles.
+  3. Describe any visible interactions such as approaching, contact, or falling.
+
+  Important rules:
+  - Focus only on observable actions.
+  - Avoid speculating about unseen causes or outcomes.
+  - If the sequence is ambiguous, describe the visible changes without guessing.
+
+  Finally, write a 5–8 sentence description of the visible sequence of actions in the scene.
+  Focus on what can be directly observed rather than constructing a dramatic story.
+
+  Do not mention tiles, frames, or images.
+  Describe the sequence of observable actions in the scene.
+
+  If a visible interaction likely leads to someone falling or collapsing,
+  describe it as a possible interaction rather than assuming it was accidental.
+
+  Focus on actions between people and how the situation changes over time.
+
+output_constraints:
+  style: factual
+  length: single_sentence
+  speculation: disallowed
+  hallucination: minimized

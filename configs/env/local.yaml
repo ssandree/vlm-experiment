@@ -1,0 +1,8 @@
+paths:
+  model_root: C:/models/
+  datasets_root: C:/datasets/
+
+device:
+  type: cuda
+  index: 0
+

@@ -1,0 +1,12 @@
+# UCFCrime video_list로 지정한 비디오만 사용 (segment-level annotation 적용)
+# Run: dataset: ucfcrime_subset 로 run_video_captioning 실행
+#
+# video_list의 파일명(stem)이 annotation JSON 키와 일치해야 함.
+mode: ucfcrime_subset
+
+paths:
+  annotation: Classification_DB/UCFCrime/val/annotation
+  video_list:
+    - Classification_DB/UCFCrime/Robbery146_x264.mp4
+    - Classification_DB/UCFCrime/Assault042_x264.mp4
+    - Classification_DB/UCFCrime/Arson041_x264.mp4

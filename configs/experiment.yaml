@@ -1,0 +1,87 @@
+# ============================================================
+# configs/experiment.yaml
+# ⭐ 실험 정의의 유일한 진입점
+# ============================================================
+
+# ------------------------------------------------------------
+# 실행 환경 선택
+# ------------------------------------------------------------
+#  - local  : 로컬 PC (Windows / 단일 GPU)
+#  - server : 서버 (A6000 / A5000 등)
+# ------------------------------------------------------------
+env: server
+
+# ------------------------------------------------------------
+# 모델 선택
+# ------------------------------------------------------------
+# 사용 예시:
+# - qwen3_vl_8b
+# ------------------------------------------------------------
+model: qwen3_vl_8b
+
+# ------------------------------------------------------------
+# Task 선택
+# ------------------------------------------------------------
+# - captioning
+# - grounding
+# - vqa
+# - mi_vqa
+# - video_captioning
+# ------------------------------------------------------------
+task: video_captioning
+
+# ------------------------------------------------------------
+# 프롬프트 템플릿 선택
+# ------------------------------------------------------------
+# grounding: grounding_prompt
+# captioning: captioning_prompt | youcook_caption_prompt
+# ------------------------------------------------------------
+prompt: video_captioning_prompt
+
+# ------------------------------------------------------------
+# 데이터셋 선택
+# ------------------------------------------------------------
+# video: ucfcrime_subset (annotation 필요), video_only (annotation 불필요)
+# image: image_only (이미지 1장당 추론 1회)
+# image: image_multi (그룹당 여러 이미지 → 1개 추론, run_multi_image_inference)
+# ------------------------------------------------------------
+dataset: video_only
+
+# ------------------------------------------------------------
+# Video 설정
+# ------------------------------------------------------------
+# video.input_mode:
+#   - full    : 비디오 통째로 모델에 전달 (run_video_full) - sampling 없음
+#   - sampling: 프레임 샘플링 후 inference (run_video_captioning, run_video_grounding)
+#
+# video_only 데이터셋: sampling.type은 uniform (annotation 없음)
+# ucfcrime_subset: sampling.type은 segment_aware
+# ------------------------------------------------------------
+video:
+  input_mode: full   # full | sampling
+  output_level: video  # segment | video
+  fps: 1                 # full 모드에서 processor 내부 샘플링 (초당 프레임)
+  sampling:
+    type: uniform        # uniform | segment_aware | middle | manual
+    manual_frame_map_path: Classification_DB/tmp_img/manual_frames.json
+    fps: 0.3              # uniform에서 설정 시 초당 프레임 수로 샘플링 (예: 1 = 1초 간격)
+  aggregation:
+    type: multi        # grid | multi | grid_no_resize | top_right_crop
+
+# ------------------------------------------------------------
+# Image 설정 (run_image_inference, run_multi_image_inference)
+# ------------------------------------------------------------
+# input_strategy: identity | top_right_crop
+# - identity: 원본 그대로 (기본)
+# - top_right_crop: 우상단 1/4 crop 후 inference, frames/에 crop 저장
+# ------------------------------------------------------------
+image:
+  input_strategy: identity   # identity | top_right_crop
+
+# ------------------------------------------------------------
+# 런타임 / 실험 제어 옵션
+# ------------------------------------------------------------
+runtime:
+  batch_size: 1
+  num_samples: None
+  shuffle_seed: 42

@@ -1,0 +1,32 @@
+# configs/prompt/video_captioning_prompt.yaml
+
+version: v0.1
+prompt_type: image_only
+language: en
+
+system_prompt: |
+  
+user_prompt: |
+  You are analyzing a short video showing a single scene evolving over time.
+
+  Follow these steps:
+  1. Identify the main people, objects, and actions visible at the beginning of the video.
+  2. Observe how people or objects move or interact as the video progresses.
+  3. Note any visible changes such as approaching, physical contact, pushing, falling, or objects being moved.
+  Focus only on clearly observable actions and interactions.
+
+  Important rules:
+  - Base your description only on visible evidence.
+  - Do not speculate about causes, intentions, or outcomes.
+  - Avoid interpreting emotions or motivations.
+  - Use neutral, objective language describing only observable actions.
+
+  Finally, write 5–8 sentences describing what happens in the scene over time.
+  Do not mention frames, images, timestamps, or the word "video".
+
+output_constraints:
+  style: factual
+  length: single_sentence
+  speculation: disallowed
+  hallucination: minimized
+
