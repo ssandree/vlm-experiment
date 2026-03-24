@@ -1,19 +1,19 @@
-# configs/prompt/grid_captioning_prompt.yaml
+# configs/prompt/strip_captioning_prompt.yaml
 # This image is composed of four tiles, each of which is a sequential frame from a CCTV video. The frames are ordered from top-left → top-right → bottom-left → bottom-right. Describe what is happening over time.
 
 system_prompt: |
   
 user_prompt: |
-  You are analyzing a 2×2 grid of frames from the same scene.
-  The temporal order is: top-left → top-right → bottom-left → bottom-right.
+  You are analyzing a strip image.
+  The image contains horizontally arranged panels showing sequential moments from the same video.
 
   Describe ONLY what is directly visible. Do NOT infer, assume, or explain beyond the visual evidence.
 
   Follow these steps internally (DO NOT output them):
 
-  1. Track entities (people, hands, small objects, ground-level items) across all tiles
+  1. Track entities (people, hands, small objects, ground-level items) across panels
   2. Detect actions (drop, place, throw, reach, bend, object appear/disappear, fire/smoke/liquid)
-  3. Identify observable changes across the grid sequence
+  3. Identify observable changes from left to right
   4. Identify the LAST visible action before any outcome
 
   Causality rule (STRICT):
@@ -22,6 +22,6 @@ user_prompt: |
   - Do NOT include causal explanations in the output
 
   Output:
-  Write a natural caption (4-6 sentences) describing the visible sequence of events following the temporal order.
+  Write a natural caption (4-6 sentences) describing the visible sequence of events from left to right.
   Do NOT explain causality.
   Do NOT add information not directly visible.

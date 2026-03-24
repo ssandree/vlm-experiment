@@ -16,13 +16,18 @@ from PIL import Image
 from configs.config_resolver import ConfigResolver
 from models.model_factory import build_vlm
 from data.loader.loader_factory import get_dataloader
-from data.video_sampling.sampling1_perseg import get_video_timestamps_one_per_segment
-from data.video_sampling.uniform_sampling import uniform_timestamps_for_segment
+from data.video_sampling.build_sampling_strategy import build_sampling_strategy
 from data.frame_aggregation.aggregation_strategy import build_aggregation_strategy
 from data.utils.frame_decoding import DecordFrameDecoder
 from data.input_strategies.image_merge import GridMergeNoResizeAggregation
+from run_inferences.video_common import (
+    normalize_sampling_cfg,
+    pick_representative_image_paths,
+    save_aggregated_frames,
+)
 from tasks.grounding.grounding_task import GroundingTask
 from tasks.utils.create_experiment_file import create_experiment_dir_and_metadata
+from tasks.utils.json_utils import write_json_bundle
 from tasks.utils.stage_latency import StageLatencyProfiler
 
 
@@ -64,17 +69,29 @@ def run_video_grounding(experiment_path: str = "configs/experiment.yaml") -> Pat
 
     sampling_cfg = dict(video_cfg.get("sampling") or {})
     num_frames = int(sampling_cfg.get("num_frames", 4))
-    fps = float(sampling_cfg.get("fps", 30.0))
     ann_path = cfg.resolved_dataset.get("paths", {}).get("annotation")
     annotation = None
+    annotation_path = None
     if ann_path:
         ann_path = Path(ann_path)
         if ann_path.exists():
+            annotation_path = ann_path
             with open(ann_path, "r", encoding="utf-8") as f:
                 annotation = json.load(f)
         elif ann_path.with_suffix(".json").exists():
-            with open(ann_path.with_suffix(".json"), "r", encoding="utf-8") as f:
+            annotation_path = ann_path.with_suffix(".json")
+            with open(annotation_path, "r", encoding="utf-8") as f:
                 annotation = json.load(f)
+
+    sampling_cfg = normalize_sampling_cfg(
+        sampling_cfg=sampling_cfg,
+        datasets_root=Path(cfg.env_cfg["paths"]["datasets_root"]),
+        annotation_path=annotation_path,
+    )
+    if annotation_path is None:
+        sampling_cfg["type"] = "uniform"
+        sampling_cfg["num_frames"] = num_frames
+    sampler = build_sampling_strategy(sampling_cfg)
 
     aggregation_cfg = video_cfg.get("aggregation") or {}
     aggregator = build_aggregation_strategy(aggregation_cfg)
@@ -84,7 +101,6 @@ def run_video_grounding(experiment_path: str = "configs/experiment.yaml") -> Pat
     video_paths_out: dict[str, str] = {}
     segments_out: dict[str, list[float]] = {}
     frame_paths_out: dict[str, list[str]] = {}
-    grid_image_paths_out: dict[str, str] = {}
 
     frames_dir = exp_dir / "frames"
     frames_dir.mkdir(parents=True, exist_ok=True)
@@ -115,27 +131,20 @@ def run_video_grounding(experiment_path: str = "configs/experiment.yaml") -> Pat
                 if not isinstance(data, dict):
                     continue
                 duration = float(data.get("duration", 0.0))
-                raw_ts = data.get("timestamps") or []
-                segs = []
-                for s in raw_ts:
-                    if isinstance(s, (list, tuple)) and len(s) >= 2:
-                        segs.append((float(s[0]), float(s[1])))
                 if duration <= 0:
                     duration = 1.0
-                timestamps = profiler.measure(
-                    "sampling",
-                    lambda dur=duration, sg=segs: get_video_timestamps_one_per_segment(
-                        dur, sg, num_frames=num_frames, fps=fps
-                    ),
-                )
+                segment = (0.0, duration)
             else:
-                # video_only: segment from loader (0, duration)
                 clip_id_for_video = video_to_clips[video_name][0]
                 segment = segments[clip_id_for_video]
-                timestamps = profiler.measure(
-                    "sampling",
-                    lambda seg=segment: uniform_timestamps_for_segment(seg, num_frames),
-                )
+                duration = float(segment[1]) - float(segment[0])
+                if duration <= 0:
+                    duration = 1.0
+
+            timestamps = profiler.measure(
+                "sampling",
+                lambda seg=segment, vn=video_name: sampler.sample(seg, clip_id=vn),
+            )
             video_path = video_to_path[video_name]
             images = profiler.measure(
                 "decoding",
@@ -147,18 +156,11 @@ def run_video_grounding(experiment_path: str = "configs/experiment.yaml") -> Pat
             )
             video_aggregated[video_name] = aggregated
 
-            grid_path = frames_dir / f"{video_name}_grid.jpg"
-            if isinstance(aggregated, Image.Image):
-                aggregated.save(grid_path, format="JPEG")
-                _frame_paths = [str(grid_path.resolve())]
-            else:
-                _frame_paths = []
-                for idx, img in enumerate(aggregated):
-                    frame_name = f"{video_name}_f{idx:02d}.jpg"
-                    frame_path = frames_dir / frame_name
-                    img.save(frame_path, format="JPEG")
-                    _frame_paths.append(str(frame_path.resolve()))
-            video_saved_paths[video_name] = _frame_paths
+            video_saved_paths[video_name] = save_aggregated_frames(
+                frames_dir=frames_dir,
+                sample_id=video_name,
+                aggregated=aggregated,
+            )
 
         for clip_id in clip_ids:
             segment = segments[clip_id]
@@ -171,7 +173,6 @@ def run_video_grounding(experiment_path: str = "configs/experiment.yaml") -> Pat
             aggregated = video_aggregated[video_name]
             paths = video_saved_paths[video_name]
             frame_paths_out[clip_id] = paths
-            grid_image_paths_out[clip_id] = paths[0] if paths else ""
 
             if isinstance(aggregated, Image.Image):
                 sample_image = aggregated
@@ -201,34 +202,19 @@ def run_video_grounding(experiment_path: str = "configs/experiment.yaml") -> Pat
             video_paths_out[clip_id] = str(video_path)
             segments_out[clip_id] = [float(segment[0]), float(segment[1])]
 
-    image_paths_out: dict[str, str] = {}
-    for clip_id, paths in frame_paths_out.items():
-        if clip_id in grid_image_paths_out:
-            image_paths_out[clip_id] = grid_image_paths_out[clip_id]
-        else:
-            rep_idx = len(paths) // 2
-            image_paths_out[clip_id] = paths[rep_idx]
-
-    with open(exp_dir / "predictions.json", "w", encoding="utf-8") as f:
-        json.dump(all_predictions, f, indent=2, ensure_ascii=False)
-
-    with open(exp_dir / "references.json", "w", encoding="utf-8") as f:
-        json.dump(all_references, f, indent=2, ensure_ascii=False)
-
-    with open(exp_dir / "video_paths.json", "w", encoding="utf-8") as f:
-        json.dump(video_paths_out, f, indent=2)
-
-    with open(exp_dir / "image_paths.json", "w", encoding="utf-8") as f:
-        json.dump(image_paths_out, f, indent=2)
-
-    with open(exp_dir / "segments.json", "w", encoding="utf-8") as f:
-        json.dump(segments_out, f, indent=2)
-
-    with open(exp_dir / "frame_paths.json", "w", encoding="utf-8") as f:
-        json.dump(frame_paths_out, f, indent=2)
-
-    with open(exp_dir / "latency.json", "w", encoding="utf-8") as f:
-        json.dump(profiler.to_dict(), f, indent=2)
+    image_paths_out = pick_representative_image_paths(frame_paths_out)
+    write_json_bundle(
+        exp_dir,
+        {
+            "predictions.json": (all_predictions, False),
+            "references.json": (all_references, False),
+            "video_paths.json": video_paths_out,
+            "image_paths.json": image_paths_out,
+            "segments.json": segments_out,
+            "frame_paths.json": frame_paths_out,
+            "latency.json": profiler.to_dict(),
+        },
+    )
 
     print(f"✔ Video grounding inference done. Saved to {exp_dir}")
     return exp_dir

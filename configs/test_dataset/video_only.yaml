@@ -1,13 +1,21 @@
 # video_only.yaml
 # annotation 없이 비디오 경로만 지정. prompt에 따라 task 수행 (captioning, grounding 등)
+# /media/user/img_backup1/Img_DB/2.VLM/tmp_vid/
 mode: video_only
 
 paths:
   video_list:
-    - Classification_DB/tmp_vid/Robbery146_x264.mp4
-    - Classification_DB/tmp_vid/Assault042_x264.mp4
-    - Classification_DB/tmp_vid/Arson041_x264.mp4
-    - Classification_DB/tmp_vid/yt_arson.mp4
+    - Classification_DB/tmp_vid/Kitsune_Udon_Recipe_1280.mp4
+    # - Classification_DB/tmp_vid/barbershop_arson_fireself_1080.mp4
+    # - Classification_DB/tmp_vid/barbershop_arson_fireself_960.mp4
+    # - Classification_DB/tmp_vid/barbershop_arson_fireself_640.mp4
+    # - Classification_DB/tmp_vid/barbershop_arson_fireself_320.mp4
+# - Classification_DB/tmp_vid/bucket_fire.mp4
+# - Classification_DB/tmp_vid/street_arson.mp4
+# - Classification_DB/tmp_vid/Robbery146_x264.mp4
+# - Classification_DB/tmp_vid/Assault042_x264.mp4
+# - Classification_DB/tmp_vid/Arson041_x264.mp4
+# - Classification_DB/tmp_vid/yt_arson_trimmed.mp4
 # - Classification_DB/tmp_vid/Robbery146_x264_trimmed.mp4
 # - Classification_DB/tmp_vid/Assault042_x264_trimmed.mp4
 # - Classification_DB/tmp_vid/Arson041_x264_trimmed.mp4

@@ -4,8 +4,3 @@
 paths:
   model_root: /data1/vailab02_dir/vlm_models/
   datasets_root: /data1/vailab02_dir
-
-device:
-  type: cuda
-  index: 0
-

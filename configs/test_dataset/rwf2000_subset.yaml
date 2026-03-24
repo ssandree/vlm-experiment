@@ -1,6 +1,0 @@
-# configs/test_dataset/rwf2000_subset.yaml
-mode: rwf2000_subset
-
-paths:
-  # server
-  video:  VLM_DB/Classification_DB/rwf2000/0Ow4cotKOuw_1.avi

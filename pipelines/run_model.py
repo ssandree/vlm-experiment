@@ -1,6 +1,6 @@
 # pipelines/run_model.py
 
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Optional, Any
 from PIL import Image
 from models.base_vlm import BaseVLM
 
@@ -37,9 +37,11 @@ def run_model(
     user_prompt: str,
     caption_prefix: str = "",
     generation_cfg: dict = None,
+    profiler: Optional[Any] = None,
 ) -> Dict[str, str]:
     """
     이미지 1장당 추론 1회. 각 (image, image_id)에 대해 generate 호출.
+    profiler가 주어지면 각 추론을 profiler.measure("inference", ...)로 감싼다.
     """
     if generation_cfg is None:
         generation_cfg = {}
@@ -49,13 +51,20 @@ def run_model(
     outputs: Dict[str, str] = {}
 
     for image, image_id in zip(images, image_ids):
-        caption = vlm.generate(
-            image=image,
-            system_prompt=system_prompt,
-            user_prompt=user_prompt,
-            caption_prefix=caption_prefix,
-            gen_cfg=generation_cfg,
-        )
+        def _run():
+            return vlm.run(
+                task="captioning",
+                image=image,
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                caption_prefix=caption_prefix,
+                gen_cfg=generation_cfg,
+            )
+
+        if profiler is not None:
+            caption = profiler.measure("inference", _run)
+        else:
+            caption = _run()
         outputs[image_id] = normalize_assistant_output(caption) if caption else ""
 
     return outputs
@@ -69,10 +78,12 @@ def run_model_multi_image(
     user_prompt: str,
     caption_prefix: str = "",
     generation_cfg: dict = None,
+    profiler: Optional[Any] = None,
 ) -> Dict[str, str]:
     """
     그룹당 추론 1회. 여러 이미지를 한 번에 모델에 넣어 하나의 추론 결과 생성.
     image_groups: [[img1, img2, img3, img4], [img5, img6, ...], ...]
+    profiler가 주어지면 각 추론을 profiler.measure("inference", ...)로 감싼다.
     """
     if generation_cfg is None:
         generation_cfg = {}
@@ -82,13 +93,20 @@ def run_model_multi_image(
     outputs: Dict[str, str] = {}
 
     for images, group_id in zip(image_groups, group_ids):
-        caption = vlm.generate(
-            image=images,
-            system_prompt=system_prompt,
-            user_prompt=user_prompt,
-            caption_prefix=caption_prefix,
-            gen_cfg=generation_cfg,
-        )
+        def _run():
+            return vlm.run(
+                task="captioning",
+                image=images,
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                caption_prefix=caption_prefix,
+                gen_cfg=generation_cfg,
+            )
+
+        if profiler is not None:
+            caption = profiler.measure("inference", _run)
+        else:
+            caption = _run()
         outputs[group_id] = normalize_assistant_output(caption) if caption else ""
 
     return outputs

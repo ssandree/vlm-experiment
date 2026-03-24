@@ -8,7 +8,6 @@ image.input_strategy: identity | top_right_crop → 처리된 이미지를 exp_~
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -19,8 +18,9 @@ from models.model_factory import build_vlm
 from data.loader.loader_factory import get_dataloader
 from data.input_strategies.build_input_strategy import build_input_strategy
 from tasks.utils.create_experiment_file import create_experiment_dir_and_metadata
+from tasks.utils.json_utils import write_json_bundle
+from tasks.utils.stage_latency import StageLatencyProfiler
 from pipelines.run_model import run_model
-from pipelines.run_model import normalize_assistant_output
 
 
 def run_image_inference(experiment_path: str = "configs/experiment.yaml") -> Path:
@@ -42,6 +42,9 @@ def run_image_inference(experiment_path: str = "configs/experiment.yaml") -> Pat
     prompt_cfg = cfg.prompt_cfg
     system_prompt = prompt_cfg.get("system_prompt", "")
     user_prompt = prompt_cfg.get("user_prompt", "")
+    caption_prefix = ""
+    if isinstance(prompt_cfg.get("baseline"), dict):
+        caption_prefix = prompt_cfg["baseline"].get("prefix", "") or ""
     task_name = cfg.task_name
     gen_cfg = cfg.model_cfg.get("generation") or {}
 
@@ -61,6 +64,7 @@ def run_image_inference(experiment_path: str = "configs/experiment.yaml") -> Pat
     frames_dir = exp_dir / "frames"
     frames_dir.mkdir(parents=True, exist_ok=True)
 
+    profiler = StageLatencyProfiler()
     all_predictions: Dict[str, Any] = {}
     all_references: Dict[str, Any] = {}
     all_image_paths: Dict[str, str] = {}
@@ -86,23 +90,24 @@ def run_image_inference(experiment_path: str = "configs/experiment.yaml") -> Pat
             image_ids=image_ids,
             system_prompt=system_prompt,
             user_prompt=user_prompt,
-            caption_prefix="",
+            caption_prefix=caption_prefix,
             generation_cfg=gen_cfg,
+            profiler=profiler,
         )
         for iid, ipath in zip(image_ids, image_paths):
-            raw = outputs.get(iid, "")
-            all_predictions[iid] = normalize_assistant_output(raw)
+            all_predictions[iid] = outputs.get(iid, "")
             all_references[iid] = references.get(iid, [])
             all_image_paths[iid] = ipath
 
-    with open(exp_dir / "predictions.json", "w", encoding="utf-8") as f:
-        json.dump(all_predictions, f, indent=2, ensure_ascii=False)
-
-    with open(exp_dir / "references.json", "w", encoding="utf-8") as f:
-        json.dump(all_references, f, indent=2, ensure_ascii=False)
-
-    with open(exp_dir / "image_paths.json", "w", encoding="utf-8") as f:
-        json.dump(all_image_paths, f, indent=2)
+    write_json_bundle(
+        exp_dir,
+        {
+            "predictions.json": (all_predictions, False),
+            "references.json": (all_references, False),
+            "image_paths.json": all_image_paths,
+            "latency.json": profiler.to_dict(),
+        },
+    )
 
     print(f"✔ Image inference done. Saved to {exp_dir}")
     return exp_dir

@@ -1,13 +1,13 @@
 """
 Build InputStrategy / FrameAggregationStrategy from config dictionary.
 
-Config format:
+Input strategy (run_image_inference, run_multi_image_inference):
   input_strategy:
-    type: "multi_image"   # "identity" | "multi_image" | "grid_merge" | "top_right_crop"
+    type: "identity" | "multi_image" | "top_right_crop"
 
-Legacy format (for video captioning):
+Aggregation (run_video_captioning, run_video_grounding):
   aggregation:
-    type: "multi"   # "identity" | "multi" | "grid" | "grid_no_resize" | "top_right_crop"
+    type: "identity" | "multi" | "grid_no_resize" | "top_right_crop" | "image_strip"
 """
 
 from __future__ import annotations
@@ -21,9 +21,8 @@ from data.input_strategies.multi_image import (
     IdentityAggregation,
 )
 from data.input_strategies.image_merge import (
-    GridMergeStrategy,
-    GridMergeAggregation,
     GridMergeNoResizeAggregation,
+    ImageStripAggregation,
 )
 from data.input_strategies.top_right_crop import (
     TopRightCropStrategy,
@@ -33,48 +32,45 @@ from data.input_strategies.top_right_crop import (
 
 def build_input_strategy(config: Dict[str, Any] | None) -> InputStrategy:
     """
-    Build InputStrategy from config dictionary.
+    Build InputStrategy for image input (run_image_inference, run_multi_image_inference).
+    Types: identity, multi_image, top_right_crop.
     """
     config = config or {}
-    strategy_type = (config.get("type") or "multi_image").strip().lower()
+    strategy_type = (config.get("type") or "identity").strip().lower()
 
     if strategy_type == "multi_image":
         return MultiImageStrategy()
-    if strategy_type == "grid_merge":
-        return GridMergeStrategy()
     if strategy_type == "top_right_crop":
         return TopRightCropStrategy()
-
     if strategy_type == "identity":
         return IdentityAggregation()
-    if strategy_type == "multi":
-        return MultiImageAggregation()
-    if strategy_type == "grid":
-        return GridMergeAggregation()
-    if strategy_type == "grid_no_resize":
-        return GridMergeNoResizeAggregation()
-    if strategy_type == "top_right_crop":
-        return TopRightCropAggregation()
 
     raise ValueError(
         f"Unknown input strategy type: {config.get('type')}. "
-        "Expected 'multi_image', 'grid_merge', 'top_right_crop', "
-        "or legacy types: 'identity', 'multi', 'grid', 'grid_no_resize'."
+        "Expected 'identity', 'multi_image', or 'top_right_crop'."
     )
 
 
 def build_aggregation_strategy(config: Dict[str, Any] | None) -> FrameAggregationStrategy:
     """
-    Legacy function: build FrameAggregationStrategy from config.
+    Build FrameAggregationStrategy for video captioning/grounding.
+    Types: identity, multi, grid_no_resize, top_right_crop, image_strip.
     """
-    strategy = build_input_strategy(config)
+    config = config or {}
+    strategy_type = (config.get("type") or "multi").strip().lower()
 
-    if isinstance(strategy, FrameAggregationStrategy):
-        return strategy
+    if strategy_type == "identity":
+        return IdentityAggregation()
+    if strategy_type == "multi":
+        return MultiImageAggregation()
+    if strategy_type == "grid_no_resize":
+        return GridMergeNoResizeAggregation()
+    if strategy_type == "top_right_crop":
+        return TopRightCropAggregation()
+    if strategy_type == "image_strip":
+        return ImageStripAggregation()
 
-    class WrappedAggregation(FrameAggregationStrategy):
-        def aggregate(self, images):
-            return strategy.process(images)
-
-    return WrappedAggregation()
-
+    raise ValueError(
+        f"Unknown aggregation type: {config.get('type')}. "
+        "Expected 'identity', 'multi', 'grid_no_resize', 'top_right_crop', or 'image_strip'."
+    )

@@ -5,18 +5,28 @@ mode: image_multi
 
 paths:
   image_groups:
-    # 그룹 1: Arson041 4장 → 1개 추론
-    - - Classification_DB/tmp_img/evt_frames/Arson041_x264_f00.jpg
-      - Classification_DB/tmp_img/evt_frames/Arson041_x264_f01.jpg
-      - Classification_DB/tmp_img/evt_frames/Arson041_x264_f02.jpg
-      - Classification_DB/tmp_img/evt_frames/Arson041_x264_f03.jpg
-    # 그룹 2: Assault042 4장 → 1개 추론
-    - - Classification_DB/tmp_img/evt_frames/Assault042_x264_f00.jpg
-      - Classification_DB/tmp_img/evt_frames/Assault042_x264_f01.jpg
-      - Classification_DB/tmp_img/evt_frames/Assault042_x264_f02.jpg
-      - Classification_DB/tmp_img/evt_frames/Assault042_x264_f03.jpg
-    # 그룹 3: Robbery146 4장 → 1개 추론
-    - - Classification_DB/tmp_img/evt_frames/Robbery146_x264_f00.jpg
-      - Classification_DB/tmp_img/evt_frames/Robbery146_x264_f01.jpg
-      - Classification_DB/tmp_img/evt_frames/Robbery146_x264_f02.jpg
-      - Classification_DB/tmp_img/evt_frames/Robbery146_x264_f03.jpg
+    # 몸에불붙는영상
+    - - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f01.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f04.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f14.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f15.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f16.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f18.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f21.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f22.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f23.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f26.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f28.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f34.jpg
+    - - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f00.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f01.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f02.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f03.jpg
+    - - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Assault042_x264_f00.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Assault042_x264_f01.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Assault042_x264_f02.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Assault042_x264_f03.jpg
+    - - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Robbery146_x264_f00.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Robbery146_x264_f01.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Robbery146_x264_f02.jpg
+      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Robbery146_x264_f03.jpg

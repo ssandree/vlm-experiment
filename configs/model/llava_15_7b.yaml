@@ -1,0 +1,11 @@
+# configs/model/llava_15_7b.yaml
+
+name: llava-1.5-7b-hf
+root: llava-1.5-7b-hf
+
+precision:
+  dtype: float16          # float16 | int8
+
+generation:
+  max_new_tokens: 320
+  do_sample: false

@@ -1,32 +1,19 @@
 # configs/prompt/video_captioning_prompt.yaml
 
-version: v0.1
-prompt_type: image_only
-language: en
-
 system_prompt: |
   
 user_prompt: |
-  You are analyzing a short video showing a single scene evolving over time.
+  You are watching a short video clip from a continuous scene.
+  Describe what is visibly happening over time, focusing on changes, movements, and actions as they occur.
+  Only describe what you can directly see. Do not infer intentions, causes, or off-screen events.
 
-  Follow these steps:
-  1. Identify the main people, objects, and actions visible at the beginning of the video.
-  2. Observe how people or objects move or interact as the video progresses.
-  3. Note any visible changes such as approaching, physical contact, pushing, falling, or objects being moved.
-  Focus only on clearly observable actions and interactions.
+  Pay attention to:
+    - People, hands, and small or ground-level objects
+    - Movements such as reaching, placing, dropping, throwing, or picking up
+    - Objects appearing, disappearing, or changing position
+    - Any visible substances (e.g., smoke, liquid, fire)
+  If something is unclear or only partially visible, treat it as not visible.
+  Describe the sequence in order, ending with the last visible action in the clip.
 
-  Important rules:
-  - Base your description only on visible evidence.
-  - Do not speculate about causes, intentions, or outcomes.
-  - Avoid interpreting emotions or motivations.
-  - Use neutral, objective language describing only observable actions.
-
-  Finally, write 5–8 sentences describing what happens in the scene over time.
-  Do not mention frames, images, timestamps, or the word "video".
-
-output_constraints:
-  style: factual
-  length: single_sentence
-  speculation: disallowed
-  hallucination: minimized
-
+  Output:
+  Write a natural 4–6 sentence caption describing the sequence of visible events in the video. Do not explain why anything happens.

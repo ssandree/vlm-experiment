@@ -2,9 +2,6 @@
 
 ## RefCOCO 계열 및 grounding 태스크용 기본 템플릿
 # Qwen3-VL 스타일의 <image> 플레이스홀더 사용
-version: v0.1
-prompt_type: grounding
-language: en
 
 system_prompt: |
   

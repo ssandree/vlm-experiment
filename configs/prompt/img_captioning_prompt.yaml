@@ -1,0 +1,7 @@
+# configs/prompt/img_captioning_prompt.yaml
+# Describe what is happening in the image.
+
+system_prompt: |
+
+user_prompt: |
+  Describe what is happening in the image.

@@ -6,6 +6,8 @@ from pathlib import Path
 import torch
 from PIL import Image
 
+from models.inference_input_log import print_model_input_shapes
+
 logger = logging.getLogger(__name__)
 
 
@@ -100,6 +102,7 @@ def run_inference(
     ).to(model.device)
 
     inputs.pop("token_type_ids", None)
+    print_model_input_shapes(inputs, tag="qwen_single_image")
 
     gen_kwargs = dict(gen_cfg)
     if "pad_token_id" not in gen_kwargs:
@@ -195,6 +198,7 @@ def run_inference_multi_image(
         return_tensors="pt",
     ).to(model.device)
     inputs.pop("token_type_ids", None)
+    print_model_input_shapes(inputs, tag="qwen_multi_image")
 
     gen_kwargs = dict(gen_cfg)
     if "pad_token_id" not in gen_kwargs:
@@ -265,6 +269,7 @@ def run_inference_video(
     )
     inputs.pop("token_type_ids", None)
     inputs = inputs.to(model.device)
+    print_model_input_shapes(inputs, tag="qwen_video")
 
     input_length = inputs["input_ids"].shape[1]
 

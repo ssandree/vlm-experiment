@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# models
+hf_models/
+
+# eval git clone
+third_party/
+
+# Outputs (experiment artifacts)
+outputs/
+
+# Environment
+.env
+.venv/
+.vscode/
+
+# OS
+.DS_Store

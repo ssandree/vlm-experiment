@@ -11,18 +11,21 @@ import json
 from pathlib import Path
 from typing import Any, List
 
-from PIL import Image
-
 from configs.config_resolver import ConfigResolver
 from models.model_factory import build_vlm
 from data.loader.loader_factory import get_dataloader
 from data.video_sampling.build_sampling_strategy import build_sampling_strategy
-from data.video_sampling.sampling1_perseg import get_video_timestamps_one_per_segment
 from data.frame_aggregation.aggregation_strategy import build_aggregation_strategy
 from data.loader.experiment_loaders import _get_video_duration
 from data.utils.frame_decoding import DecordFrameDecoder
+from run_inferences.video_common import (
+    normalize_sampling_cfg,
+    pick_representative_image_paths,
+    save_aggregated_frames,
+)
 from tasks.captioning.caption_task import CaptioningTask
 from tasks.utils.create_experiment_file import create_experiment_dir_and_metadata
+from tasks.utils.json_utils import write_json_bundle
 from tasks.utils.stage_latency import StageLatencyProfiler
 
 
@@ -78,16 +81,14 @@ def run_video_captioning(experiment_path: str = "configs/experiment.yaml") -> Pa
         print(f"✔ Video-level captioning done. Saved to {exp_dir}")
         return exp_dir
 
-    sampling_cfg = dict(video_cfg.get("sampling") or {})
+    raw_sampling_cfg = dict(video_cfg.get("sampling") or {})
     root = Path(cfg.env_cfg["paths"]["datasets_root"])
-    if sampling_cfg.get("type") == "manual" and sampling_cfg.get("manual_frame_map_path"):
-        p = Path(sampling_cfg["manual_frame_map_path"])
-        if not p.is_absolute():
-            sampling_cfg["manual_frame_map_path"] = str(root / sampling_cfg["manual_frame_map_path"])
-    if sampling_cfg.get("type") == "segment_aware":
-        ann_path = cfg.resolved_dataset.get("paths", {}).get("annotation")
-        if ann_path is not None:
-            sampling_cfg["annotation_path"] = str(Path(ann_path))
+    ann_path = cfg.resolved_dataset.get("paths", {}).get("annotation")
+    sampling_cfg = normalize_sampling_cfg(
+        raw_sampling_cfg,
+        datasets_root=root,
+        annotation_path=Path(ann_path) if ann_path is not None else None,
+    )
     sampler = build_sampling_strategy(sampling_cfg)
 
     all_captions: dict[str, str] = {}
@@ -95,7 +96,6 @@ def run_video_captioning(experiment_path: str = "configs/experiment.yaml") -> Pa
     video_paths_out: dict[str, str] = {}
     segments_out: dict[str, list[float]] = {}
     frame_paths_out: dict[str, list[str]] = {}
-    grid_image_paths_out: dict[str, str] = {}
 
     frames_dir = exp_dir / "frames"
     frames_dir.mkdir(parents=True, exist_ok=True)
@@ -131,19 +131,11 @@ def run_video_captioning(experiment_path: str = "configs/experiment.yaml") -> Pa
                 lambda: aggregator.aggregate(images),
             )
 
-            if isinstance(aggregated, Image.Image):
-                grid_path = frames_dir / f"{clip_id}_grid.jpg"
-                aggregated.save(grid_path, format="JPEG")
-                grid_image_paths_out[clip_id] = str(grid_path.resolve())
-                frame_paths_out[clip_id] = [grid_image_paths_out[clip_id]]
-            else:
-                clip_frame_paths: list[str] = []
-                for idx, img in enumerate(aggregated):
-                    frame_name = f"{clip_id}_f{idx:02d}.jpg"
-                    frame_path = frames_dir / frame_name
-                    img.save(frame_path, format="JPEG")
-                    clip_frame_paths.append(str(frame_path.resolve()))
-                frame_paths_out[clip_id] = clip_frame_paths
+            frame_paths_out[clip_id] = save_aggregated_frames(
+                frames_dir=frames_dir,
+                sample_id=clip_id,
+                aggregated=aggregated,
+            )
 
             sample = {
                 "image": aggregated,
@@ -166,34 +158,20 @@ def run_video_captioning(experiment_path: str = "configs/experiment.yaml") -> Pa
             video_paths_out[clip_id] = str(video_path)
             segments_out[clip_id] = [float(segment[0]), float(segment[1])]
 
-    image_paths_out: dict[str, str] = {}
-    for clip_id, paths in frame_paths_out.items():
-        if clip_id in grid_image_paths_out:
-            image_paths_out[clip_id] = grid_image_paths_out[clip_id]
-        else:
-            rep_idx = len(paths) // 2
-            image_paths_out[clip_id] = paths[rep_idx]
+    image_paths_out = pick_representative_image_paths(frame_paths_out)
 
-    with open(exp_dir / "captions.json", "w", encoding="utf-8") as f:
-        json.dump(all_captions, f, indent=2, ensure_ascii=False)
-
-    with open(exp_dir / "reference_captions.json", "w", encoding="utf-8") as f:
-        json.dump(all_references, f, indent=2, ensure_ascii=False)
-
-    with open(exp_dir / "video_paths.json", "w", encoding="utf-8") as f:
-        json.dump(video_paths_out, f, indent=2)
-
-    with open(exp_dir / "image_paths.json", "w", encoding="utf-8") as f:
-        json.dump(image_paths_out, f, indent=2)
-
-    with open(exp_dir / "segments.json", "w", encoding="utf-8") as f:
-        json.dump(segments_out, f, indent=2)
-
-    with open(exp_dir / "frame_paths.json", "w", encoding="utf-8") as f:
-        json.dump(frame_paths_out, f, indent=2)
-
-    with open(exp_dir / "latency.json", "w", encoding="utf-8") as f:
-        json.dump(profiler.to_dict(), f, indent=2)
+    write_json_bundle(
+        exp_dir,
+        {
+            "captions.json": (all_captions, False),
+            "reference_captions.json": (all_references, False),
+            "video_paths.json": video_paths_out,
+            "image_paths.json": image_paths_out,
+            "segments.json": segments_out,
+            "frame_paths.json": frame_paths_out,
+            "latency.json": profiler.to_dict(),
+        },
+    )
 
     print(f"✔ Video captioning inference done. Saved to {exp_dir}")
     return exp_dir
@@ -220,23 +198,34 @@ def _run_video_level_captioning(
         )
 
     annotation: dict = {}
+    annotation_path = None
     if ann_path:
         ann_path = Path(ann_path)
-        if not ann_path.exists():
-            ann_path = ann_path.with_suffix(".json")
         if ann_path.exists():
+            annotation_path = ann_path
             with open(ann_path, "r", encoding="utf-8") as f:
                 annotation = json.load(f)
+        elif ann_path.with_suffix(".json").exists():
+            annotation_path = ann_path.with_suffix(".json")
+            with open(annotation_path, "r", encoding="utf-8") as f:
+                annotation = json.load(f)
 
-    sampling_cfg = video_cfg.get("sampling") or {}
-    fps = float(sampling_cfg.get("fps", 30.0))
+    sampling_cfg = normalize_sampling_cfg(
+        dict(video_cfg.get("sampling") or {}),
+        datasets_root=Path(cfg.env_cfg["paths"]["datasets_root"]),
+        annotation_path=annotation_path,
+        fallback_uniform_when_segment_aware_without_annotation=True,
+    )
+    sampler = build_sampling_strategy(sampling_cfg)
+    # Uniform fallback for videos not in annotation (when using segment_aware)
+    from data.video_sampling.uniform_sampling import UniformFrameSampling
+    uniform_fallback = UniformFrameSampling(num_frames=max(1, int(sampling_cfg.get("num_frames", 4))))
 
     all_captions: dict[str, str] = {}
     all_references: dict[str, list[str]] = {}
     video_paths_out: dict[str, str] = {}
     segments_out: dict[str, list] = {}
     frame_paths_out: dict[str, list[str]] = {}
-    grid_image_paths_out: dict[str, str] = {}
     frames_dir = exp_dir / "frames"
     frames_dir.mkdir(parents=True, exist_ok=True)
 
@@ -261,16 +250,18 @@ def _run_video_level_captioning(
         if duration <= 0:
             duration = 1.0
 
-        num_frames = int(sampling_cfg.get("num_frames") or 0)
-        if num_frames <= 0:
-            num_frames = max(1, int(duration * fps))
-
-        timestamps = profiler.measure(
-            "sampling",
-            lambda: get_video_timestamps_one_per_segment(
-                duration, segments, num_frames=num_frames, fps=fps
-            ),
-        )
+        segment = (0.0, duration)
+        try:
+            timestamps = profiler.measure(
+                "sampling",
+                lambda: sampler.sample(segment, clip_id=video_name),
+            )
+        except KeyError:
+            # Video not in annotation (segment_aware) -> use uniform fallback
+            timestamps = profiler.measure(
+                "sampling",
+                lambda: uniform_fallback.sample(segment),
+            )
 
         images = profiler.measure(
             "decoding",
@@ -281,19 +272,11 @@ def _run_video_level_captioning(
             lambda: aggregator.aggregate(images),
         )
 
-        if isinstance(aggregated, Image.Image):
-            grid_path = frames_dir / f"{video_name}_grid.jpg"
-            aggregated.save(grid_path, format="JPEG")
-            grid_image_paths_out[video_name] = str(grid_path.resolve())
-            frame_paths_out[video_name] = [grid_image_paths_out[video_name]]
-        else:
-            clip_frame_paths = []
-            for idx, img in enumerate(aggregated):
-                frame_name = f"{video_name}_f{idx:02d}.jpg"
-                frame_path = frames_dir / frame_name
-                img.save(frame_path, format="JPEG")
-                clip_frame_paths.append(str(frame_path.resolve()))
-            frame_paths_out[video_name] = clip_frame_paths
+        frame_paths_out[video_name] = save_aggregated_frames(
+            frames_dir=frames_dir,
+            sample_id=video_name,
+            aggregated=aggregated,
+        )
 
         sample = {
             "image": aggregated,
@@ -314,27 +297,19 @@ def _run_video_level_captioning(
         video_paths_out[video_name] = str(video_path)
         segments_out[video_name] = [[float(a), float(b)] for a, b in segments]
 
-    image_paths_out = {}
-    for vid, paths in frame_paths_out.items():
-        if vid in grid_image_paths_out:
-            image_paths_out[vid] = grid_image_paths_out[vid]
-        else:
-            image_paths_out[vid] = paths[len(paths) // 2]
-
-    with open(exp_dir / "captions.json", "w", encoding="utf-8") as f:
-        json.dump(all_captions, f, indent=2, ensure_ascii=False)
-    with open(exp_dir / "reference_captions.json", "w", encoding="utf-8") as f:
-        json.dump(all_references, f, indent=2, ensure_ascii=False)
-    with open(exp_dir / "video_paths.json", "w", encoding="utf-8") as f:
-        json.dump(video_paths_out, f, indent=2)
-    with open(exp_dir / "image_paths.json", "w", encoding="utf-8") as f:
-        json.dump(image_paths_out, f, indent=2)
-    with open(exp_dir / "segments.json", "w", encoding="utf-8") as f:
-        json.dump(segments_out, f, indent=2)
-    with open(exp_dir / "frame_paths.json", "w", encoding="utf-8") as f:
-        json.dump(frame_paths_out, f, indent=2)
-    with open(exp_dir / "latency.json", "w", encoding="utf-8") as f:
-        json.dump(profiler.to_dict(), f, indent=2)
+    image_paths_out = pick_representative_image_paths(frame_paths_out)
+    write_json_bundle(
+        exp_dir,
+        {
+            "captions.json": (all_captions, False),
+            "reference_captions.json": (all_references, False),
+            "video_paths.json": video_paths_out,
+            "image_paths.json": image_paths_out,
+            "segments.json": segments_out,
+            "frame_paths.json": frame_paths_out,
+            "latency.json": profiler.to_dict(),
+        },
+    )
 
 
 def main():

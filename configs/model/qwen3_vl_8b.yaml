@@ -3,8 +3,6 @@
 name: Qwen3-VL-8B-Instruct
 # root: Qwen3-VL-8B-Instruct   # model_root 기준 상대경로
 root: "Qwen3-VL-8B-Instruct/models--Qwen--Qwen3-VL-8B-Instruct/snapshots/0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
-framework: transformers
-trust_remote_code: true
 
 precision:
   dtype: float16
@@ -21,9 +19,3 @@ generation:
 
 vision:
   image_size: 336        # 224 | 336 | 448
-  max_images: 1          # multi-image 대비용
-
-runtime:
-  device_map: auto       # transformers
-  use_flash_attn: true   # 지원 시
-

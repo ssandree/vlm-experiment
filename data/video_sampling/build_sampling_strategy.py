@@ -1,6 +1,6 @@
 """
 Build FrameSamplingStrategy from config.
-Supports: uniform, middle, manual, segment_aware (실험용).
+Supports: uniform, fps_sampling, middle, manual, segment_aware (실험용).
 """
 
 from __future__ import annotations
@@ -15,6 +15,7 @@ from .sampling_strategy import (
     SegmentAwareSampling,
 )
 from .uniform_sampling import UniformFrameSampling
+from .fps_sampling import FpsFrameSampling
 from .manual_sampling import ManualFrameSampling
 
 
@@ -26,12 +27,12 @@ def build_sampling_strategy(config: Dict[str, Any] | None) -> FrameSamplingStrat
     if strategy_type == "middle":
         return MiddleFrameSampling()
     if strategy_type == "uniform":
+        return UniformFrameSampling(num_frames=int(num_frames))
+    if strategy_type == "fps_sampling":
         fps = config.get("fps")
-        fps = float(fps) if fps is not None else None
-        return UniformFrameSampling(
-            num_frames=int(num_frames),
-            fps=fps,
-        )
+        if fps is None:
+            raise ValueError("fps_sampling requires sampling.fps in config")
+        return FpsFrameSampling(fps=float(fps))
     if strategy_type == "manual":
         path = config.get("manual_frame_map_path")
         if not path:
@@ -84,5 +85,5 @@ def build_sampling_strategy(config: Dict[str, Any] | None) -> FrameSamplingStrat
         )
     raise ValueError(
         f"Unknown sampling type: {config.get('type')}. "
-        "Expected 'uniform', 'middle', 'manual', or 'segment_aware'."
+        "Expected 'uniform', 'fps_sampling', 'middle', 'manual', or 'segment_aware'."
     )

@@ -16,8 +16,9 @@ env: server
 # ------------------------------------------------------------
 # 사용 예시:
 # - qwen3_vl_8b
+# - qwen3_vl_32b
 # ------------------------------------------------------------
-model: qwen3_vl_8b
+model: qwen3_vl_8b 
 
 # ------------------------------------------------------------
 # Task 선택
@@ -25,18 +26,17 @@ model: qwen3_vl_8b
 # - captioning
 # - grounding
 # - vqa
-# - mi_vqa
-# - video_captioning
 # ------------------------------------------------------------
-task: video_captioning
+task: captioning
 
 # ------------------------------------------------------------
 # 프롬프트 템플릿 선택
 # ------------------------------------------------------------
 # grounding: grounding_prompt
-# captioning: captioning_prompt | youcook_caption_prompt
+# captioning: captioning_prompt | video_captioning_prompt | strip_captioning_prompt | grid_captioning_prompt | fps_captioning_prompt
+# prompt yaml의 system_prompt, user_prompt, baseline.prefix 사용 (output_constraints는 문서용)
 # ------------------------------------------------------------
-prompt: video_captioning_prompt
+prompt: captioning_prompt
 
 # ------------------------------------------------------------
 # 데이터셋 선택
@@ -54,19 +54,22 @@ dataset: video_only
 #   - full    : 비디오 통째로 모델에 전달 (run_video_full) - sampling 없음
 #   - sampling: 프레임 샘플링 후 inference (run_video_captioning, run_video_grounding)
 #
-# video_only 데이터셋: sampling.type은 uniform (annotation 없음)
+# video_only 데이터셋: sampling.type은 uniform 또는 fps_sampling (annotation 없음)
 # ucfcrime_subset: sampling.type은 segment_aware
+# - uniform: 전체 비디오에서 일정한 시간 간격으로 num_frames개 추출
+# - fps_sampling: 초당 fps개 프레임 (비디오 길이만큼 추출)
 # ------------------------------------------------------------
 video:
-  input_mode: full   # full | sampling
+  input_mode: sampling   # full | sampling
   output_level: video  # segment | video
   fps: 1                 # full 모드에서 processor 내부 샘플링 (초당 프레임)
   sampling:
-    type: uniform        # uniform | segment_aware | middle | manual
+    type: fps_sampling        # uniform | fps_sampling | segment_aware | middle | manual
+    num_frames: 4        # uniform 전용: 추출 프레임 수
     manual_frame_map_path: Classification_DB/tmp_img/manual_frames.json
-    fps: 0.3              # uniform에서 설정 시 초당 프레임 수로 샘플링 (예: 1 = 1초 간격)
+    fps: 0.8            # fps_sampling 전용: 초당 프레임 수
   aggregation:
-    type: multi        # grid | multi | grid_no_resize | top_right_crop
+    type: multi        # multi | grid_no_resize | top_right_crop | image_strip
 
 # ------------------------------------------------------------
 # Image 설정 (run_image_inference, run_multi_image_inference)

@@ -7,12 +7,12 @@ experiment.yaml에서 dataset: image_only 설정.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 from configs.config_resolver import ConfigResolver
 from data.loader.loader_factory import get_dataloader
 from detectors.yolo_detector import YOLODetector
+from tasks.utils.json_utils import write_json_bundle
 
 
 def run_yolo_detection(
@@ -57,11 +57,13 @@ def run_yolo_detection(
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    with open(output_dir / "predictions.json", "w", encoding="utf-8") as f:
-        json.dump(all_predictions, f, indent=2, ensure_ascii=False)
-
-    with open(output_dir / "image_paths.json", "w", encoding="utf-8") as f:
-        json.dump(all_image_paths, f, indent=2)
+    write_json_bundle(
+        output_dir,
+        {
+            "predictions.json": (all_predictions, False),
+            "image_paths.json": all_image_paths,
+        },
+    )
 
     print(f"✔ YOLO detection done. Saved to {output_dir}")
     return output_dir

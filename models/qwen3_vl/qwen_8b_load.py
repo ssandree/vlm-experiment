@@ -9,15 +9,14 @@ def load_qwen_model(model_cfg: dict, runtime_cfg: dict):
     """
 
     precision_cfg = model_cfg.get("precision", {})
-    precision_runtime = runtime_cfg.get("precision", {})
-    runtime_device = runtime_cfg.get("device", {})
+    _ = runtime_cfg  # reserved for future runtime overrides
 
     pretrained_path = model_cfg["resolved_root"]
     print(f"[Model Load] Using LOCAL model: {pretrained_path}")
 
-    dtype_str = precision_runtime.get(
-        "dtype", precision_cfg.get("dtype", "float16")
-    )
+    dtype_str = precision_cfg.get("dtype", "float16")
+    if isinstance(dtype_str, str):
+        dtype_str = dtype_str.lower()
 
     use_int8 = dtype_str == "int8"
 
@@ -35,7 +34,7 @@ def load_qwen_model(model_cfg: dict, runtime_cfg: dict):
     model = AutoModelForImageTextToText.from_pretrained(
         pretrained_path,
         torch_dtype=torch_dtype,
-        device_map=runtime_device.get("device_map", "auto"),
+        device_map="auto",
         quantization_config=quantization_config,
         trust_remote_code=True,
         local_files_only=True,

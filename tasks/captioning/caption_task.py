@@ -1,18 +1,7 @@
-import os
 from typing import Dict, Any, List
 
 from tasks.base_task import BaseTask
 from pipelines.run_model import normalize_assistant_output
-
-
-def normalize_image_id(image_id: str) -> str:
-    """
-    Dataset-independent image_id normalization.
-    - Flickr30k: "4567734402.jpg" -> "4567734402"
-    - COCO: "391895" -> "391895"
-    - ImageNet: "n01440764_18.JPEG" -> "n01440764_18"
-    """
-    return os.path.splitext(image_id)[0]
 
 
 class CaptioningTask(BaseTask):

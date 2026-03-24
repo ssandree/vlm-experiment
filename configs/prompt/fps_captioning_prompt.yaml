@@ -1,42 +1,30 @@
 # configs/prompt/fps_captioning_prompt.yaml
 # This image is composed of four tiles, each of which is a sequential frame from a CCTV video. The frames are ordered from top-left → top-right → bottom-left → bottom-right. Describe what is happening over time.
 
-version: v0.1
-prompt_type: video_only
-language: en
-
 system_prompt: |
   
 user_prompt: |
-  You are analyzing a sequence of frames sampled from the same video.
+  You are analyzing sequential frames from the same video.
 
-  The frames show the same scene evolving over time, but the number of frames and the time gap between them may vary.
+  Describe ONLY what can be visually supported by the frames.
+  However, you MAY describe observable interactions and changes across frames.
 
-  Follow these steps carefully:
+  Rules:
+  - Do NOT invent unseen objects or actions
+  - If a change is clearly visible across frames, describe it as a sequence
+  - You MAY describe interactions (e.g., fire spreads to a person) if visually supported
+  - Do NOT assume intent or hidden causes
 
-  1. Identify the main individuals visible in the scene and track them across the sequence.
-  2. Describe any visible movements or interactions between them.
-  3. Note whether actions such as approaching, physical contact, or falling occur.
+  Focus on:
+  1. People and their body movements
+  2. Object interactions (holding, placing, pouring, ignition)
+  3. Changes over time (appearance of fire, spread, movement, people)
+  4. Effects on people (e.g., fire reaching the body, reactions)
 
-  Important rules:
-  - Focus only on clearly observable actions.
-  - Avoid speculating about causes or outcomes.
-  - If an action is ambiguous, describe it neutrally.
-  - Because frames may be sparsely sampled, describe only actions that are clearly visible in the provided sequence.
+  Output format:
+  Write 5–7 short sentences.
+  Each sentence should describe ONE step in the sequence.
+  Preserve temporal order.
 
-  Finally, write a 5–8 sentence description of the visible sequence of events in the scene.
-  Focus on what can be directly observed rather than constructing a dramatic story.
-
-  Do not mention frames or images.
-  Describe the sequence of observable actions in the scene.
-
-  If a visible interaction may lead to someone falling or collapsing,
-  describe it as a possible interaction rather than assuming it was accidental.
-
-  Focus on actions between people and how the situation changes over time.
-
-output_constraints:
-  style: factual
-  length: single_sentence
-  speculation: disallowed
-  hallucination: minimized
+  Do NOT summarize.
+  Do NOT explain causality beyond what is visually evident.

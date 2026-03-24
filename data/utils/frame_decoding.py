@@ -26,7 +26,7 @@ class FrameDecoder(Protocol):
 class DecordFrameDecoder(FrameDecoder):
     def __init__(self, ctx_device: int = 0):
         try:
-            from decord import VideoReader, cpu  # type: ignore
+            from decord import VideoReader, cpu, bridge  # type: ignore
         except ImportError as e:
             raise RuntimeError(
                 "DecordFrameDecoder 를 사용하려면 'decord' 패키지가 필요합니다. "
@@ -34,23 +34,17 @@ class DecordFrameDecoder(FrameDecoder):
             ) from e
         self._VideoReader = VideoReader
         self._ctx = cpu(ctx_device)
-
-    def decode(self, video_path: Path, timestamps: List[float]) -> List[Image.Image]:
-        from decord import bridge  # type: ignore
-        import numpy as np
-
         bridge.set_bridge("native")
 
+    def decode(self, video_path: Path, timestamps: List[float]) -> List[Image.Image]:
         vr = self._VideoReader(str(video_path), ctx=self._ctx)
         num_frames = len(vr)
         fps = float(vr.get_avg_fps()) if vr.get_avg_fps() > 0 else 30.0
 
         images: List[Image.Image] = []
-        frame_indices: List[int] = []
         for t in timestamps:
             frame_idx = int(round(t * fps))
             frame_idx = max(0, min(frame_idx, num_frames - 1))
-            frame_indices.append(frame_idx)
             frame = vr[frame_idx]
             frame_np = frame.asnumpy()
             if frame_np.dtype != "uint8":

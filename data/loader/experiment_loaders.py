@@ -29,11 +29,6 @@ class UCFCrimeSubsetEvalLoader:
         self.video_paths = [Path(p) for p in video_list]
         self.ann_path = Path(annotation_path)
 
-        def _int_or_none(x):
-            if x is None or (isinstance(x, str) and x.strip().lower() == "none"):
-                return None
-            return int(x)
-
         self.batch_size = _int_or_none(batch_size) or 1
         self.num_samples = _int_or_none(num_samples)
         self.shuffle_seed = _int_or_none(shuffle_seed) or 42
@@ -102,25 +97,7 @@ class UCFCrimeSubsetEvalLoader:
         batch_indices = self._sample_indices[self._cursor:batch_end]
         self._cursor = batch_end
 
-        clip_ids: List[str] = []
-        video_paths: Dict[str, Path] = {}
-        segments: Dict[str, Tuple[float, float]] = {}
-        sentences: Dict[str, str] = {}
-
-        for idx in batch_indices:
-            s = self._samples[idx]
-            cid = s["clip_id"]
-            clip_ids.append(cid)
-            video_paths[cid] = s["video_path"]
-            segments[cid] = s["segment"]
-            sentences[cid] = s["sentence"]
-
-        return {
-            "clip_ids": clip_ids,
-            "video_paths": video_paths,
-            "segments": segments,
-            "sentences": sentences,
-        }
+        return _build_video_batch_from_samples(self._samples, batch_indices)
 
 
 def _int_or_none(x):
@@ -143,6 +120,31 @@ def _get_video_duration(video_path: Path) -> float:
         return n / fps if n > 0 else 1.0
     except Exception as e:
         raise RuntimeError(f"Failed to get duration for {video_path}: {e}") from e
+
+
+def _build_video_batch_from_samples(
+    samples: List[Dict[str, Any]],
+    sample_indices: List[int],
+) -> Dict[str, Any]:
+    clip_ids: List[str] = []
+    video_paths: Dict[str, Path] = {}
+    segments: Dict[str, Tuple[float, float]] = {}
+    sentences: Dict[str, str] = {}
+
+    for idx in sample_indices:
+        s = samples[idx]
+        cid = s["clip_id"]
+        clip_ids.append(cid)
+        video_paths[cid] = s["video_path"]
+        segments[cid] = s["segment"]
+        sentences[cid] = s["sentence"]
+
+    return {
+        "clip_ids": clip_ids,
+        "video_paths": video_paths,
+        "segments": segments,
+        "sentences": sentences,
+    }
 
 
 def video_only_loader(
@@ -187,12 +189,11 @@ class VideoOnlyLoader:
 
         self._samples: List[Dict[str, Any]] = []
         for video_path in self.video_paths:
-            duration = _get_video_duration(video_path)
             clip_id = video_path.stem or f"video_{len(self._samples)}"
             self._samples.append({
                 "clip_id": clip_id,
                 "video_path": video_path,
-                "segment": (0.0, duration),
+                "segment": None,
                 "sentence": "",
             })
 
@@ -221,25 +222,13 @@ class VideoOnlyLoader:
         batch_idx = self._indices[self._cursor:end]
         self._cursor = end
 
-        clip_ids: List[str] = []
-        video_paths: Dict[str, Path] = {}
-        segments: Dict[str, Tuple[float, float]] = {}
-        sentences: Dict[str, str] = {}
-
         for idx in batch_idx:
             s = self._samples[idx]
-            cid = s["clip_id"]
-            clip_ids.append(cid)
-            video_paths[cid] = s["video_path"]
-            segments[cid] = s["segment"]
-            sentences[cid] = s["sentence"]
+            if s["segment"] is None:
+                duration = _get_video_duration(s["video_path"])
+                s["segment"] = (0.0, duration)
 
-        return {
-            "clip_ids": clip_ids,
-            "video_paths": video_paths,
-            "segments": segments,
-            "sentences": sentences,
-        }
+        return _build_video_batch_from_samples(self._samples, batch_idx)
 
 
 def image_only_loader(

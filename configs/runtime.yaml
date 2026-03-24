@@ -1,12 +1,2 @@
-seed: 42
-deterministic: true
-
-precision:
-  autocast: false
-
-cuda:
-  allow_tf32: true
-
-debug:
-  verbose: false
-
+# Passed to experiment.json metadata. No inference-time usage.
+{}

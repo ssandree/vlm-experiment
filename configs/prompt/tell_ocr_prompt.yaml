@@ -1,0 +1,8 @@
+# configs/prompt/tell_ocr_prompt.yaml
+# This image is composed of four tiles, each of which is a sequential frame from a CCTV video. The frames are ordered from top-left → top-right → bottom-left → bottom-right. Describe what is happening over time.
+#  Locate every text in the image. Output as a JSON array of objects, each with "bbox_2d": [x1, y1, x2, y2] (in 0-1000 normalized coordinates).
+
+system_prompt: |
+  
+user_prompt: |
+  Tell me all the text in the image.

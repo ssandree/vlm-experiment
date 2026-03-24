@@ -144,12 +144,20 @@ class GroundingTask(BaseTask):
 
         numbers = re.findall(r"[\d.]+", cleaned)
         if len(numbers) >= 4:
-            coords = [float(x) for x in numbers[:4]]
-            if all(0 <= c <= 1 for c in coords):
-                coords = [c * 1000 for c in coords]
-            if coords[2] > coords[0] and coords[3] > coords[1]:
-                return self._normalize_bbox_scale([[coords[0], coords[1], coords[2] - coords[0], coords[3] - coords[1]]])
-            return self._normalize_bbox_scale([coords])
+            # 모든 숫자를 4개씩 끊어서 bbox 후보로 사용 (top-1이 아니라 전체 추출)
+            raw_boxes: List[List[float]] = []
+            for i in range(0, len(numbers) - 3, 4):
+                coords = [float(x) for x in numbers[i : i + 4]]
+                if all(0 <= c <= 1 for c in coords):
+                    coords = [c * 1000 for c in coords]
+                if coords[2] > coords[0] and coords[3] > coords[1]:
+                    raw_boxes.append(
+                        [coords[0], coords[1], coords[2] - coords[0], coords[3] - coords[1]]
+                    )
+                else:
+                    raw_boxes.append(coords)
+            if raw_boxes:
+                return self._normalize_bbox_scale(raw_boxes)
 
         return []
 

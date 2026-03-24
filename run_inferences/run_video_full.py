@@ -9,16 +9,16 @@ configs/experiment.yaml에서 video.input_mode: full 설정 시 사용.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any
 
 from configs.config_resolver import ConfigResolver
 from models.model_factory import build_vlm
 from data.loader.loader_factory import get_dataloader
-from tasks.captioning.caption_task import CaptioningTask
 from tasks.grounding.grounding_task import GroundingTask
 from tasks.utils.create_experiment_file import create_experiment_dir_and_metadata
+from tasks.utils.json_utils import write_json_bundle
+from tasks.utils.stage_latency import StageLatencyProfiler
 
 
 def _get_video_size(video_path: Path) -> tuple[int, int]:
@@ -50,6 +50,9 @@ def run_video_full(experiment_path: str = "configs/experiment.yaml") -> Path:
     prompt_cfg = cfg.prompt_cfg
     system_prompt = prompt_cfg.get("system_prompt", "")
     user_prompt = prompt_cfg.get("user_prompt", "")
+    caption_prefix = ""
+    if isinstance(prompt_cfg.get("baseline"), dict):
+        caption_prefix = prompt_cfg["baseline"].get("prefix", "") or ""
     task_name = cfg.task_name
     gen_cfg = cfg.model_cfg.get("generation") or {}
     video_cfg = cfg.exp_cfg.get("video") or cfg.resolved_dataset.get("video") or {}
@@ -69,8 +72,10 @@ def run_video_full(experiment_path: str = "configs/experiment.yaml") -> Path:
         extra_meta={"task": task_name, "video": {**video_cfg, "input_mode": "full"}},
     )
 
+    profiler = StageLatencyProfiler()
     all_outputs: dict[str, Any] = {}
     video_paths_out: dict[str, str] = {}
+    grounding_task = GroundingTask() if task_name == "grounding" else None
 
     for batch in loader:
         clip_ids = batch["clip_ids"]
@@ -80,62 +85,52 @@ def run_video_full(experiment_path: str = "configs/experiment.yaml") -> Path:
             video_path = Path(video_paths[clip_id])
             print(f"[{clip_id}] Processing {video_path.name}...")
 
+            def _run_video():
+                return vlm.run_video(
+                    video_path=str(video_path),
+                    system_prompt=system_prompt,
+                    user_prompt=user_prompt,
+                    caption_prefix=caption_prefix,
+                    gen_cfg=gen_cfg,
+                    fps=fps,
+                )
+
+            raw_out = profiler.measure("inference", _run_video)
+
             if task_name == "captioning":
-                caption = vlm.run_video(
-                    video_path=str(video_path),
-                    system_prompt=system_prompt,
-                    user_prompt=user_prompt,
-                    caption_prefix="",
-                    gen_cfg=gen_cfg,
-                    fps=fps,
-                )
-                all_outputs[clip_id] = caption
+                all_outputs[clip_id] = raw_out
             elif task_name == "grounding":
-                raw = vlm.run_video(
-                    video_path=str(video_path),
-                    system_prompt=system_prompt,
-                    user_prompt=user_prompt,
-                    caption_prefix="",
-                    gen_cfg=gen_cfg,
-                    fps=fps,
-                )
-                task = GroundingTask()
-                bboxes = task._parse_bboxes_from_text(raw)
+                assert grounding_task is not None
+                bboxes = grounding_task._parse_bboxes_from_text(raw_out)
                 w, h = _get_video_size(video_path)
-                scaled = [task._scale_bbox_to_pixels(b, w, h) for b in bboxes]
-                all_outputs[clip_id] = {"bbox": scaled, "raw_output": raw}
+                scaled = [grounding_task._scale_bbox_to_pixels(b, w, h) for b in bboxes]
+                all_outputs[clip_id] = {"bbox": scaled, "raw_output": raw_out}
             else:
-                out = vlm.run_video(
-                    video_path=str(video_path),
-                    system_prompt=system_prompt,
-                    user_prompt=user_prompt,
-                    caption_prefix="",
-                    gen_cfg=gen_cfg,
-                    fps=fps,
-                )
-                all_outputs[clip_id] = out
+                all_outputs[clip_id] = raw_out
 
             video_paths_out[clip_id] = str(video_path)
 
     out_key = "captions" if task_name == "captioning" else "predictions"
-    with open(exp_dir / f"{out_key}.json", "w", encoding="utf-8") as f:
-        if task_name == "captioning":
-            json.dump(all_outputs, f, indent=2, ensure_ascii=False)
-        else:
-            preds = {
-                k: v.get("bbox", v) if isinstance(v, dict) else v
-                for k, v in all_outputs.items()
-            }
-            json.dump(preds, f, indent=2, ensure_ascii=False)
+    if task_name == "captioning":
+        out_payload = all_outputs
+    else:
+        out_payload = {
+            k: v.get("bbox", v) if isinstance(v, dict) else v
+            for k, v in all_outputs.items()
+        }
+
+    payloads: dict[str, Any] = {
+        f"{out_key}.json": (out_payload, False),
+        "video_paths.json": video_paths_out,
+        "latency.json": profiler.to_dict(),
+    }
 
     if task_name == "grounding":
         raw_out = {k: v.get("raw_output", "") for k, v in all_outputs.items() if isinstance(v, dict)}
         if raw_out:
-            with open(exp_dir / "raw_outputs.json", "w", encoding="utf-8") as f:
-                json.dump(raw_out, f, indent=2, ensure_ascii=False)
+            payloads["raw_outputs.json"] = (raw_out, False)
 
-    with open(exp_dir / "video_paths.json", "w", encoding="utf-8") as f:
-        json.dump(video_paths_out, f, indent=2)
+    write_json_bundle(exp_dir, payloads)
 
     print(f"✔ Video full inference done. Saved to {exp_dir}")
     return exp_dir

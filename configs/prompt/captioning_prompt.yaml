@@ -1,10 +1,6 @@
 # configs/prompt/captioning_prompt.yaml
 # This image is composed of four tiles, each of which is a sequential frame from a CCTV video. The frames are ordered from top-left → top-right → bottom-left → bottom-right. Describe what is happening over time.
 
-version: v0.1
-prompt_type: image_only
-language: en
-
 system_prompt: |
   
 user_prompt: |
@@ -12,30 +8,32 @@ user_prompt: |
 
   The frames show the same scene evolving over time.
 
-  Follow these steps carefully:
+  Follow these steps:
 
-  1. Identify the main individuals in the scene and track them across frames.
-  2. Describe any visible movements or interactions between them.
-  3. Note whether actions such as approaching, physical contact, or falling occur.
+  Briefly describe the main people, objects, and actions visible in each frame.
+
+  Compare the frames in order and identify any visible changes
+  (such as movement, physical contact, someone approaching, pushing, or falling).
+
+  Focus only on clearly observable actions and interactions.
 
   Important rules:
-  - Focus only on clearly observable actions.
-  - Avoid speculating about causes or outcomes.
-  - If an action is ambiguous, describe it neutrally.
 
-  Finally, write a 5–8 sentence description of the visible sequence of events in the scene.
-  Focus on what can be directly observed rather than constructing a dramatic story.
+  Base your description only on visible evidence.
 
-  Do not mention frames or images.
-  Describe the sequence of observable actions in the scene.
+  Avoid speculating about events that are not clearly shown.
 
-  If a visible interaction likely leads to someone falling or collapsing,
-  describe it as a possible interaction rather than assuming it was accidental.
+  Do not assume causes that cannot be seen.
 
-  Focus on actions between people and how the situation changes over time.
+  Finally, write a 5–8 sentence description of what happens in the scene.
+  Do not mention frames or images in the final description.
 
-output_constraints:
-  style: factual
-  length: single_sentence
-  speculation: disallowed
-  hallucination: minimized
+# Analyze sequential frames from the same video.
+
+# Describe only what is clearly visible. If something is unclear, do not describe it.
+# Do not infer intent, cause, or unseen actions.
+
+# Write 5–7 short sentences in strict temporal order.
+# Each sentence must describe one visible step.
+
+# Focus on people, object interactions, and visible changes over time.

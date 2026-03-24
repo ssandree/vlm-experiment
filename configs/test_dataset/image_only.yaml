@@ -1,18 +1,16 @@
 # image_only.yaml
 # annotation 없이 이미지 경로만 지정. prompt에 따라 task 수행 (grounding, captioning, vqa 등)
-mode: image_only
 
+mode: image_only
 paths:
   image_list:
-    - Classification_DB/tmp_img/seg_frames/Arson041_x264_f00.jpg
-    - Classification_DB/tmp_img/seg_frames/Arson041_x264_f01.jpg
-    - Classification_DB/tmp_img/seg_frames/Arson041_x264_f02.jpg
-    - Classification_DB/tmp_img/seg_frames/Arson041_x264_f03.jpg
-    - Classification_DB/tmp_img/seg_frames/Assault042_x264_f00.jpg
-    - Classification_DB/tmp_img/seg_frames/Assault042_x264_f01.jpg
-    - Classification_DB/tmp_img/seg_frames/Assault042_x264_f02.jpg
-    - Classification_DB/tmp_img/seg_frames/Assault042_x264_f03.jpg
-    - Classification_DB/tmp_img/seg_frames/Robbery146_x264_f00.jpg
-    - Classification_DB/tmp_img/seg_frames/Robbery146_x264_f01.jpg
-    - Classification_DB/tmp_img/seg_frames/Robbery146_x264_f02.jpg
-    - Classification_DB/tmp_img/seg_frames/Robbery146_x264_f03.jpg
+    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_100_1.png
+    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_100.png
+    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_99.jpg
+    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_90.jpg
+    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_89.jpg
+    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_80.jpg    
+    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_78.jpg
+    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_75.jpg
+    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_50.jpg
+    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_25.jpg
