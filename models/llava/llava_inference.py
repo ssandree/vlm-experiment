@@ -4,7 +4,7 @@ import torch
 from typing import List, Union
 from PIL import Image
 
-from models.inference_input_log import print_model_input_shapes
+from models.inference_input_log import print_model_input_shapes, print_model_output_tokens
 
 
 def run_llava_inference(
@@ -51,13 +51,22 @@ def run_llava_inference(
     print_model_input_shapes(inputs, tag="llava")
 
     with torch.no_grad():
-        outputs = model.generate(
-            **inputs,
+        do_sample = bool(gen_cfg.get("do_sample", False))
+        generate_kwargs = dict(
             max_new_tokens=gen_cfg.get("max_new_tokens", 64),
-            do_sample=gen_cfg.get("do_sample", False),
-            temperature=gen_cfg.get("temperature", 0.0),  # ⭐ evaluation 안정성
+            do_sample=do_sample,
             use_cache=True,
         )
+        # do_sample=False일 때는 sampling 관련 플래그가 유효하지 않으므로 넘기지 않는다.
+        if do_sample and "temperature" in gen_cfg:
+            generate_kwargs["temperature"] = gen_cfg.get("temperature", 0.0)
+        outputs = model.generate(**inputs, **generate_kwargs)
+    print_model_output_tokens(
+        outputs,
+        input_length=inputs["input_ids"].shape[-1],
+        tag="llava",
+        batch=inputs,
+    )
 
     # prompt 길이 이후만 디코드
     output_ids = outputs[0][inputs["input_ids"].shape[-1] :]

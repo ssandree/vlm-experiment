@@ -1,6 +1,4 @@
-  # model_root: /data1/vailab02_dir/vlm_models/
-  # datasets_root: /data1/vailab02_dir
-
+# 서버 머신 기준 절대 경로 (모델 캐시·데이터셋 루트)
 paths:
   model_root: /data1/vailab02_dir/vlm_models/
   datasets_root: /data1/vailab02_dir

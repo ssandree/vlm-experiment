@@ -1,5 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
+from typing import List
+
 from PIL import Image
 
 logger = logging.getLogger(__name__)
@@ -122,6 +124,21 @@ class BaseVLM(ABC):
     ) -> str:
         """Override: native video inference. 기본 구현 없음."""
         raise NotImplementedError("This model does not support native video input")
+
+    def generate_video_with_images(
+        self,
+        video_path: str,
+        images: List[Image.Image],
+        system_prompt: str,
+        user_prompt: str,
+        caption_prefix: str,
+        gen_cfg: dict,
+        fps: int | float = 1,
+    ) -> str:
+        """네이티브 비디오 + 정적 이미지 동시 입력. Qwen3-VL 등에서 구현."""
+        raise NotImplementedError(
+            "This model does not support native video + image mixed input"
+        )
 
     def generate_multi_image(
         self,

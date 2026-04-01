@@ -88,3 +88,18 @@ class LLaVA15VLM(BaseVLM):
             user_prompt=full_user,
             gen_cfg=gen_cfg or {},
         )
+
+    def generate_video_with_images(
+        self,
+        video_path: str,
+        images: List[Image.Image],
+        system_prompt: str,
+        user_prompt: str,
+        caption_prefix: str,
+        gen_cfg: dict,
+        fps: int | float = 1,
+    ) -> str:
+        raise NotImplementedError(
+            "LLaVA는 Qwen3-VL과 같은 네이티브 비디오+이미지 동시 입력을 지원하지 않습니다. "
+            "video.input_mode: sampling 을 사용하거나 Qwen 모델을 선택하세요."
+        )

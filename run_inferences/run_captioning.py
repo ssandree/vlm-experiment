@@ -32,12 +32,17 @@ def run_captioning(experiment_path: str = "configs/experiment.yaml") -> Path:
         from run_inferences.run_video_captioning import run_video_captioning
 
         return run_video_captioning(experiment_path)
+    if dataset_mode == "video_image_multi":
+        from run_inferences.run_video_image_inference import run_video_image_inference
+
+        return run_video_image_inference(experiment_path)
 
     if dataset_mode != "image_only":
         raise ValueError(
             "run_captioning requires dataset mode: image_only. "
             f"Current: {dataset_mode}. "
-            "For video, run_video_captioning; for image_multi, run_multi_image_inference."
+            "For video, run_video_captioning; for video+image mix, run_video_image_inference; "
+            "for image_multi, run_multi_image_inference."
         )
 
     vlm = build_vlm(cfg.model_cfg, cfg.runtime_cfg)

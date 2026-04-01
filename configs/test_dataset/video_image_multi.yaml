@@ -1,0 +1,15 @@
+# video_image_multi.yaml
+# 비디오 샘플링 결과 + 정적 이미지를 한 번의 multi-image 추론 입력으로 결합.
+
+mode: video_image_multi
+
+paths:
+  video_list:
+      - Classification_DB/tmp_vid/pizza_fight_roi_crop.mp4
+  image_list:
+    - Classification_DB/tmp_img/pizza_fight_1280_720_f18.jpg
+    # - Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f00.jpg
+    # - Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f01.jpg
+    # - Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f02.jpg
+    # - Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f03.jpg
+

@@ -18,11 +18,8 @@ from data.video_sampling.build_sampling_strategy import build_sampling_strategy
 from data.frame_aggregation.aggregation_strategy import build_aggregation_strategy
 from data.loader.experiment_loaders import _get_video_duration
 from data.utils.frame_decoding import DecordFrameDecoder
-from run_inferences.video_common import (
-    normalize_sampling_cfg,
-    pick_representative_image_paths,
-    save_aggregated_frames,
-)
+from pipelines.video_sampling_pipeline import sample_decode_aggregate_and_save
+from run_inferences.video_common import pick_representative_image_paths
 from tasks.captioning.caption_task import CaptioningTask
 from tasks.utils.create_experiment_file import create_experiment_dir_and_metadata
 from tasks.utils.json_utils import write_json_bundle
@@ -34,8 +31,8 @@ def run_video_captioning(experiment_path: str = "configs/experiment.yaml") -> Pa
     Run video captioning inference (sampling 모드).
     """
     cfg = ConfigResolver(experiment_path)
-    video_cfg = cfg.exp_cfg.get("video") or cfg.resolved_dataset.get("video") or {}
-    if video_cfg.get("input_mode") == "full":
+    video_cfg = cfg.resolved_video_cfg.get("raw_video_cfg") or {}
+    if cfg.resolved_video_cfg.get("input_mode") == "full":
         raise ValueError(
             "video.input_mode is 'full'. Use run_video_full for native video input."
         )
@@ -61,15 +58,12 @@ def run_video_captioning(experiment_path: str = "configs/experiment.yaml") -> Pa
 
     task = CaptioningTask()
     decoder = DecordFrameDecoder()
-    aggregation_cfg = video_cfg.get("aggregation") or {}
-    aggregator = build_aggregation_strategy(aggregation_cfg)
-
-    output_level = video_cfg.get("output_level", "segment")
+    aggregator = build_aggregation_strategy(cfg.resolved_video_cfg.get("aggregation_cfg") or {})
+    output_level = cfg.resolved_video_cfg.get("output_level", "segment")
 
     if output_level == "video":
         _run_video_level_captioning(
             cfg=cfg,
-            video_cfg=video_cfg,
             exp_dir=exp_dir,
             vlm=vlm,
             task=task,
@@ -81,15 +75,7 @@ def run_video_captioning(experiment_path: str = "configs/experiment.yaml") -> Pa
         print(f"✔ Video-level captioning done. Saved to {exp_dir}")
         return exp_dir
 
-    raw_sampling_cfg = dict(video_cfg.get("sampling") or {})
-    root = Path(cfg.env_cfg["paths"]["datasets_root"])
-    ann_path = cfg.resolved_dataset.get("paths", {}).get("annotation")
-    sampling_cfg = normalize_sampling_cfg(
-        raw_sampling_cfg,
-        datasets_root=root,
-        annotation_path=Path(ann_path) if ann_path is not None else None,
-    )
-    sampler = build_sampling_strategy(sampling_cfg)
+    sampler = build_sampling_strategy(cfg.resolved_video_cfg["sampling_cfg_strict"])
 
     all_captions: dict[str, str] = {}
     all_references: dict[str, list[str]] = {}
@@ -113,29 +99,22 @@ def run_video_captioning(experiment_path: str = "configs/experiment.yaml") -> Pa
             video_path = Path(video_paths[clip_id])
             sentence = sentences[clip_id]
 
-            timestamps = profiler.measure(
-                "sampling",
-                lambda: sampler.sample(segment, clip_id=clip_id),
-            )
-
-            images = profiler.measure(
-                "decoding",
-                lambda: decoder.decode(
-                    video_path,
-                    [max(0.0, t - float(segment[0])) for t in timestamps],
-                ),
-            )
-
-            aggregated = profiler.measure(
-                "aggregation",
-                lambda: aggregator.aggregate(images),
-            )
-
-            frame_paths_out[clip_id] = save_aggregated_frames(
+            artifacts = sample_decode_aggregate_and_save(
+                video_path=video_path,
+                segment=(float(segment[0]), float(segment[1])),
+                clip_id=clip_id,
+                sampler=sampler,
+                decoder=decoder,
+                aggregator=aggregator,
                 frames_dir=frames_dir,
-                sample_id=clip_id,
-                aggregated=aggregated,
+                profiler=profiler,
+                decode_timestamps_relative_to_segment_start=cfg.resolved_video_cfg[
+                    "decode_relative_to_segment_start"
+                ],
             )
+
+            aggregated = artifacts.aggregated
+            frame_paths_out[clip_id] = artifacts.frame_paths
 
             sample = {
                 "image": aggregated,
@@ -179,7 +158,6 @@ def run_video_captioning(experiment_path: str = "configs/experiment.yaml") -> Pa
 
 def _run_video_level_captioning(
     cfg: "ConfigResolver",
-    video_cfg: dict,
     exp_dir: Path,
     vlm: Any,
     task: CaptioningTask,
@@ -198,28 +176,22 @@ def _run_video_level_captioning(
         )
 
     annotation: dict = {}
-    annotation_path = None
     if ann_path:
         ann_path = Path(ann_path)
         if ann_path.exists():
-            annotation_path = ann_path
             with open(ann_path, "r", encoding="utf-8") as f:
                 annotation = json.load(f)
         elif ann_path.with_suffix(".json").exists():
-            annotation_path = ann_path.with_suffix(".json")
-            with open(annotation_path, "r", encoding="utf-8") as f:
+            with open(ann_path.with_suffix(".json"), "r", encoding="utf-8") as f:
                 annotation = json.load(f)
 
-    sampling_cfg = normalize_sampling_cfg(
-        dict(video_cfg.get("sampling") or {}),
-        datasets_root=Path(cfg.env_cfg["paths"]["datasets_root"]),
-        annotation_path=annotation_path,
-        fallback_uniform_when_segment_aware_without_annotation=True,
-    )
+    sampling_cfg = cfg.resolved_video_cfg["sampling_cfg_fallback_uniform"]
     sampler = build_sampling_strategy(sampling_cfg)
     # Uniform fallback for videos not in annotation (when using segment_aware)
     from data.video_sampling.uniform_sampling import UniformFrameSampling
-    uniform_fallback = UniformFrameSampling(num_frames=max(1, int(sampling_cfg.get("num_frames", 4))))
+    uniform_fallback = UniformFrameSampling(
+        num_frames=max(1, int(sampling_cfg.get("num_frames", 4)))
+    )
 
     all_captions: dict[str, str] = {}
     all_references: dict[str, list[str]] = {}
@@ -252,31 +224,33 @@ def _run_video_level_captioning(
 
         segment = (0.0, duration)
         try:
-            timestamps = profiler.measure(
-                "sampling",
-                lambda: sampler.sample(segment, clip_id=video_name),
+            artifacts = sample_decode_aggregate_and_save(
+                video_path=video_path,
+                segment=segment,
+                clip_id=video_name,
+                sampler=sampler,
+                decoder=decoder,
+                aggregator=aggregator,
+                frames_dir=frames_dir,
+                profiler=profiler,
+                decode_timestamps_relative_to_segment_start=False,
             )
         except KeyError:
             # Video not in annotation (segment_aware) -> use uniform fallback
-            timestamps = profiler.measure(
-                "sampling",
-                lambda: uniform_fallback.sample(segment),
+            artifacts = sample_decode_aggregate_and_save(
+                video_path=video_path,
+                segment=segment,
+                clip_id=video_name,
+                sampler=uniform_fallback,
+                decoder=decoder,
+                aggregator=aggregator,
+                frames_dir=frames_dir,
+                profiler=profiler,
+                decode_timestamps_relative_to_segment_start=False,
             )
 
-        images = profiler.measure(
-            "decoding",
-            lambda: decoder.decode(video_path, timestamps),
-        )
-        aggregated = profiler.measure(
-            "aggregation",
-            lambda: aggregator.aggregate(images),
-        )
-
-        frame_paths_out[video_name] = save_aggregated_frames(
-            frames_dir=frames_dir,
-            sample_id=video_name,
-            aggregated=aggregated,
-        )
+        aggregated = artifacts.aggregated
+        frame_paths_out[video_name] = artifacts.frame_paths
 
         sample = {
             "image": aggregated,

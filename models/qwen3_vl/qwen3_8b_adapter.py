@@ -8,7 +8,8 @@ from models.qwen3_vl.qwen_8b_load import load_qwen_model
 from models.qwen3_vl.qwen_8b_inference import (
     run_inference,
     run_inference_multi_image,
-    run_inference_video,
+    run_inference_native_video_with_images,
+    run_inference_video_clean,
 )
 
 
@@ -88,7 +89,7 @@ class Qwen3VLM(BaseVLM):
         fps: int | float = 1,
     ) -> str:
         """비디오 파일을 통째로 모델에 전달 (native video input)."""
-        return run_inference_video(
+        return run_inference_video_clean(
             model=self.model,
             processor=self.processor,
             video_path=video_path,
@@ -97,5 +98,29 @@ class Qwen3VLM(BaseVLM):
             caption_prefix=caption_prefix,
             gen_cfg=gen_cfg,
             fps=fps,
+        )
+
+    def generate_video_with_images(
+        self,
+        video_path: str,
+        images: list[Image.Image],
+        system_prompt: str,
+        user_prompt: str,
+        caption_prefix: str,
+        gen_cfg: dict,
+        fps: int | float = 1,
+    ) -> str:
+        """네이티브 비디오 + 참조 이미지(들)를 한 프롬프트에 전달."""
+        return run_inference_native_video_with_images(
+            model=self.model,
+            processor=self.processor,
+            video_path=video_path,
+            images=images,
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            caption_prefix=caption_prefix,
+            gen_cfg=gen_cfg,
+            fps=fps,
+            images_before_video=True,
         )
 

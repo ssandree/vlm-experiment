@@ -12,10 +12,3 @@ generation:
   max_new_tokens: 420   # grounding 시 다중 bbox JSON 출력 (128은 truncation으로 일부만 저장됨)
   do_sample: false
   repetition_penalty: 1.1   # 반복 토큰 억제 (없으면 "!!!!!!..." 같은 collapse 발생)
-  # do_sample: true 로 바꾸면 아래 사용 가능:
-  # temperature: 0.7
-  # top_p: 0.9
-  # top_k: 50
-
-vision:
-  image_size: 336        # 224 | 336 | 448

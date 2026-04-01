@@ -5,28 +5,364 @@ mode: image_multi
 
 paths:
   image_groups:
+  # 1280_720
+  # - - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f05.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f09.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f13.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f18.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f20.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f27.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f32.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f34.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f41.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f47.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f59.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f70.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f75.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f84.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f87.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f93.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f94.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f96.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f98.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f100.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f102.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f104.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f114.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f121.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f127.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f143.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f147.jpg
+
+  # - - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f07.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f09.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f13.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f18.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f20.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f27.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f32.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f34.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f41.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f47.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f59.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f70.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f75.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f84.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f87.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f93.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f94.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f96.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f98.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f100.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f102.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f104.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f114.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f121.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f127.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f143.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f147.jpg
+
+  # #
+  # - - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f07.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f09.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f13.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f18.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f20.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f27.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f32.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f34.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f41.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f47.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f59.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f70.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f75.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f84.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f87.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f93.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f94.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f96.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f98.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f100.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f102.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f104.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f114.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f121.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f127.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f143.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f147.jpg
+
+  # # 320_180:
+  # - - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f05.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f07.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f09.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f13.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f18.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f20.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f27.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f32.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f34.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f41.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f47.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f59.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f70.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f75.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f84.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f87.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f93.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f94.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f96.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f98.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f100.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f102.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f104.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f114.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f121.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f127.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f143.jpg
+  #   - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_320_180_f147.jpg
+
+  # pizza_fight_roi_crop_f:
+  - - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f18.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f05.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f07.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f09.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f13.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f18.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f20.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f27.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f32.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f34.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f41.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f47.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f59.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f70.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f75.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f84.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f87.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f93.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f94.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f96.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f98.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f100.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f102.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f104.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f114.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f121.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f127.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f143.jpg
+    - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_roi_crop_f147.jpg
+
+
+  # # 1280_720
+  #   - - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f00.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f01.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f02.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f03.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f04.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f05.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f06.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f07.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f08.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f09.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f10.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f11.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f12.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f13.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f14.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f15.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f16.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f17.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f18.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f19.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f20.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f21.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f22.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f23.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f24.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f25.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_1280_720_f07_f26.jpg
+  # # 960_540
+  #   - - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f00.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f01.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f02.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f03.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f04.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f05.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f06.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f07.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f08.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f09.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f10.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f11.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f12.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f13.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f14.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f15.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f16.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f17.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f18.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f19.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f20.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f21.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f22.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f23.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f24.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f25.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f26.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_960_540_f05_f27.jpg
+  #   # 640_360
+  #   - - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f00.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f01.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f02.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f03.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f04.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f05.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f06.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f07.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f08.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f09.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f10.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f11.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f12.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f13.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f14.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f15.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f16.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f17.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f18.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f19.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f20.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f21.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f22.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f23.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f24.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f25.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f26.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f27.jpg
+  #     - /data1/vailab02_dir/Classification_DB/tmp_img/pizza_fight_fps4_frames/pizza_fight_640_360_f05_f28.jpg
+
+    # - - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f00_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f01_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f02_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f03_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f04_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f05_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f06_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f07_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f08_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f09_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f10_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f11_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f12_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f13_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f14_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f15_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f16_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f17_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f18_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f19_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f20_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f21_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f22_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f23_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f24_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f25_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f26_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f27_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f28_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f29_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f30_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f31_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f32_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f33_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f34_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f35_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f36_dehaze.jpg 
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f37_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f38_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f39_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f40_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f41_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f42_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f43_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f44_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f45_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f46_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f47_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f48_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f49_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f50_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f51_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f52_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f53_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f54_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f55_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f56_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f57_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f58_dehaze.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_vid/pizza_fight_dehaze/pizza_fight_roi_crop_f59_dehaze.jpg
+
     # 몸에불붙는영상
-    - - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f01.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f04.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f14.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f15.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f16.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f18.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f21.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f22.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f23.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f26.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f28.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/selfire_clahe_frames/barbershop_arson_fireself_1080_f34.jpg
-    - - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f00.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f01.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f02.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Arson041_x264_f03.jpg
-    - - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Assault042_x264_f00.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Assault042_x264_f01.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Assault042_x264_f02.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Assault042_x264_f03.jpg
-    - - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Robbery146_x264_f00.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Robbery146_x264_f01.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Robbery146_x264_f02.jpg
-      - /data1/vailab02_dir/Classification_DB/tmp_img/evt_clahe_frames/Robbery146_x264_f03.jpg
+    # - - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f01.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f05.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f17.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f54.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f56.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f56_1.png
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f56_2.png
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f57.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f59.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f62.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f64.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f70.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f73.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f82.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f83.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f87.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f90.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f94.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f109.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f114.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f131.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f135.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/barbershop_arson_manual23/barbershop_arson_fireself_1080_f143.jpg      # 경매소요영상
+    # - - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f00.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f37.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f42.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f86.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f93.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f100.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f105.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f108.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f111.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f144.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f148.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f158.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f164.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f242.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f251.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f282.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f285.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f286.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f287.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f289.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f292.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f293.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f294.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f297.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f300.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f307.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f311.jpg
+    #   - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f330.jpg
+      # - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f333.jpg
+      # - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f352.jpg
+      # - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f358.jpg
+      # - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f366.jpg
+      # - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f481.jpg
+      # - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f500.jpg
+      # - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f521.jpg
+      # - /data1/vailab02_dir/Classification_DB/tmp_img/auction_riot_manual32/auction_riot_f545.jpg

@@ -1,0 +1,23 @@
+# configs/prompt/image_video_prompt.yaml
+# This image is composed of four tiles, each of which is a sequential frame from a CCTV video. The frames are ordered from top-left → top-right → bottom-left → bottom-right. Describe what is happening over time.
+
+system_prompt: |
+  
+user_prompt: |
+  You are given:
+  1) A reference image (first frame) showing the initial state
+  2) ROI video video showing changes over time
+
+  Use the reference image as a baseline.
+
+  Focus on:
+  - People, hands, and small objects
+  - Movements (picking up, placing, shifting)
+  - Objects appearing, disappearing, or changing position
+  - Differences from the reference image
+
+  Because the video may be sparsely sampled, Describe only clearly visible changes
+
+  Write 5–8 sentences in time order.
+  Start with 1 sentence describing the initial state from the reference image,
+  then describe only the changes in the video. 

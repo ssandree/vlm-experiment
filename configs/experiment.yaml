@@ -4,14 +4,6 @@
 # ============================================================
 
 # ------------------------------------------------------------
-# 실행 환경 선택
-# ------------------------------------------------------------
-#  - local  : 로컬 PC (Windows / 단일 GPU)
-#  - server : 서버 (A6000 / A5000 등)
-# ------------------------------------------------------------
-env: server
-
-# ------------------------------------------------------------
 # 모델 선택
 # ------------------------------------------------------------
 # 사용 예시:
@@ -30,22 +22,26 @@ model: qwen3_vl_8b
 task: captioning
 
 # ------------------------------------------------------------
-# 프롬프트 템플릿 선택
+# 프롬프트 템플릿 선택 (prompt/prompt name)
 # ------------------------------------------------------------
 # grounding: grounding_prompt
-# captioning: captioning_prompt | video_captioning_prompt | strip_captioning_prompt | grid_captioning_prompt | fps_captioning_prompt
+# captioning: captioning_prompt | video_captioning_prompt | strip_captioning_prompt | grid_captioning_prompt
 # prompt yaml의 system_prompt, user_prompt, baseline.prefix 사용 (output_constraints는 문서용)
+# image_video_prompt
 # ------------------------------------------------------------
-prompt: captioning_prompt
+prompt:
+  name: image_video_prompt
 
 # ------------------------------------------------------------
-# 데이터셋 선택
+# 데이터셋 선택 (dataset name)
 # ------------------------------------------------------------
 # video: ucfcrime_subset (annotation 필요), video_only (annotation 불필요)
 # image: image_only (이미지 1장당 추론 1회)
 # image: image_multi (그룹당 여러 이미지 → 1개 추론, run_multi_image_inference)
+# video+image: video_image_multi (run_video_image_inference — video.input_mode full이면 네이티브 비디오 + 이미지)
 # ------------------------------------------------------------
-dataset: video_only
+dataset:
+  name: video_image_multi
 
 # ------------------------------------------------------------
 # Video 설정
@@ -60,14 +56,14 @@ dataset: video_only
 # - fps_sampling: 초당 fps개 프레임 (비디오 길이만큼 추출)
 # ------------------------------------------------------------
 video:
-  input_mode: sampling   # full | sampling
+  input_mode: full   # full | sampling
   output_level: video  # segment | video
   fps: 1                 # full 모드에서 processor 내부 샘플링 (초당 프레임)
   sampling:
     type: fps_sampling        # uniform | fps_sampling | segment_aware | middle | manual
-    num_frames: 4        # uniform 전용: 추출 프레임 수
+    num_frames: 10       # uniform 전용: 추출 프레임 수
     manual_frame_map_path: Classification_DB/tmp_img/manual_frames.json
-    fps: 0.8            # fps_sampling 전용: 초당 프레임 수
+    fps: 2           # fps_sampling 전용: 초당 프레임 수
   aggregation:
     type: multi        # multi | grid_no_resize | top_right_crop | image_strip
 

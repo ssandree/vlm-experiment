@@ -20,11 +20,8 @@ from data.video_sampling.build_sampling_strategy import build_sampling_strategy
 from data.frame_aggregation.aggregation_strategy import build_aggregation_strategy
 from data.utils.frame_decoding import DecordFrameDecoder
 from data.input_strategies.image_merge import GridMergeNoResizeAggregation
-from run_inferences.video_common import (
-    normalize_sampling_cfg,
-    pick_representative_image_paths,
-    save_aggregated_frames,
-)
+from run_inferences.video_common import pick_representative_image_paths
+from pipelines.video_sampling_pipeline import sample_decode_aggregate_and_save
 from tasks.grounding.grounding_task import GroundingTask
 from tasks.utils.create_experiment_file import create_experiment_dir_and_metadata
 from tasks.utils.json_utils import write_json_bundle
@@ -36,8 +33,8 @@ def run_video_grounding(experiment_path: str = "configs/experiment.yaml") -> Pat
     Run video grounding inference (sampling 모드).
     """
     cfg = ConfigResolver(experiment_path)
-    video_cfg = cfg.exp_cfg.get("video") or cfg.resolved_dataset.get("video") or {}
-    if video_cfg.get("input_mode") == "full":
+    video_cfg = cfg.resolved_video_cfg.get("raw_video_cfg") or {}
+    if cfg.resolved_video_cfg.get("input_mode") == "full":
         raise ValueError(
             "video.input_mode is 'full'. Use run_video_full for native video input."
         )
@@ -67,34 +64,21 @@ def run_video_grounding(experiment_path: str = "configs/experiment.yaml") -> Pat
     task = GroundingTask()
     decoder = DecordFrameDecoder()
 
-    sampling_cfg = dict(video_cfg.get("sampling") or {})
-    num_frames = int(sampling_cfg.get("num_frames", 4))
+    sampler = build_sampling_strategy(cfg.resolved_video_cfg["sampling_cfg_grounding"])
+    aggregator = build_aggregation_strategy(cfg.resolved_video_cfg.get("aggregation_cfg") or {})
+
+    # grounding output은 annotation 기반으로 duration/segment을 구성하므로,
+    # sampler 구성과 별도로 annotation 파일을 별도 로드합니다.
     ann_path = cfg.resolved_dataset.get("paths", {}).get("annotation")
     annotation = None
-    annotation_path = None
     if ann_path:
         ann_path = Path(ann_path)
         if ann_path.exists():
-            annotation_path = ann_path
             with open(ann_path, "r", encoding="utf-8") as f:
                 annotation = json.load(f)
         elif ann_path.with_suffix(".json").exists():
-            annotation_path = ann_path.with_suffix(".json")
-            with open(annotation_path, "r", encoding="utf-8") as f:
+            with open(ann_path.with_suffix(".json"), "r", encoding="utf-8") as f:
                 annotation = json.load(f)
-
-    sampling_cfg = normalize_sampling_cfg(
-        sampling_cfg=sampling_cfg,
-        datasets_root=Path(cfg.env_cfg["paths"]["datasets_root"]),
-        annotation_path=annotation_path,
-    )
-    if annotation_path is None:
-        sampling_cfg["type"] = "uniform"
-        sampling_cfg["num_frames"] = num_frames
-    sampler = build_sampling_strategy(sampling_cfg)
-
-    aggregation_cfg = video_cfg.get("aggregation") or {}
-    aggregator = build_aggregation_strategy(aggregation_cfg)
 
     all_predictions: dict[str, Any] = {}
     all_references: dict[str, dict[str, Any]] = {}
@@ -141,26 +125,20 @@ def run_video_grounding(experiment_path: str = "configs/experiment.yaml") -> Pat
                 if duration <= 0:
                     duration = 1.0
 
-            timestamps = profiler.measure(
-                "sampling",
-                lambda seg=segment, vn=video_name: sampler.sample(seg, clip_id=vn),
-            )
             video_path = video_to_path[video_name]
-            images = profiler.measure(
-                "decoding",
-                lambda: decoder.decode(video_path, timestamps),
-            )
-            aggregated = profiler.measure(
-                "aggregation",
-                lambda: aggregator.aggregate(images),
-            )
-            video_aggregated[video_name] = aggregated
-
-            video_saved_paths[video_name] = save_aggregated_frames(
+            artifacts = sample_decode_aggregate_and_save(
+                video_path=video_path,
+                segment=segment,
+                clip_id=video_name,
+                sampler=sampler,
+                decoder=decoder,
+                aggregator=aggregator,
                 frames_dir=frames_dir,
-                sample_id=video_name,
-                aggregated=aggregated,
+                profiler=profiler,
+                decode_timestamps_relative_to_segment_start=False,
             )
+            video_aggregated[video_name] = artifacts.aggregated
+            video_saved_paths[video_name] = artifacts.frame_paths
 
         for clip_id in clip_ids:
             segment = segments[clip_id]

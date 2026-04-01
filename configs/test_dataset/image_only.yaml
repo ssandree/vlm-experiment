@@ -4,13 +4,13 @@
 mode: image_only
 paths:
   image_list:
-    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_100_1.png
-    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_100.png
-    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_99.jpg
-    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_90.jpg
-    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_89.jpg
-    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_80.jpg    
-    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_78.jpg
-    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_75.jpg
-    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_50.jpg
-    - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_25.jpg
+    - Classification_DB/tmp_img/0Ow4cotKOuw_1_capture.png
+    # - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_100.png
+    # - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_99.jpg
+    # - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_90.jpg
+    # - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_89.jpg
+    # - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_80.jpg    
+    # - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_78.jpg
+    # - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_75.jpg
+    # - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_50.jpg
+    # - Classification_DB/tmp_img/new_txt_resol/textsize8_pixelsize14_25.jpg

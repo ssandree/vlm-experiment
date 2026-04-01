@@ -5,13 +5,12 @@ name: Qwen3-VL-32B-Instruct
 root: Qwen3-VL-32B-Instruct   # model_root 기준 상대경로
 
 precision:
-  dtype: float16   # 32B는 메모리 절약을 위해 INT8 (소문자: load_qwen_model 호환)
+  dtype: int8
+  llm_int8_threshold: 6.0
+  llm_int8_enable_fp32_cpu_offload: true
 
 # HuggingFace generate() 인자 그대로 전달
 generation:
-  max_new_tokens: 420
+  max_new_tokens: 256
   do_sample: false
   repetition_penalty: 1.1
-
-vision:
-  image_size: 336        # 224 | 336 | 448

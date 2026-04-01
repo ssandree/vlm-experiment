@@ -1,39 +1,20 @@
 # configs/prompt/captioning_prompt.yaml
-# This image is composed of four tiles, each of which is a sequential frame from a CCTV video. The frames are ordered from top-left → top-right → bottom-left → bottom-right. Describe what is happening over time.
 
 system_prompt: |
   
 user_prompt: |
-  You are analyzing four sequential frames from the same video.
+  You are analyzing the sequencial frames from the same video. The order of frames is chronological. 
 
-  The frames show the same scene evolving over time.
+  Step 1. Identify any visible interactions between people and objects.
 
-  Follow these steps:
+  Step 2. Identify any sudden changes between frames
 
-  Briefly describe the main people, objects, and actions visible in each frame.
+  Step 3. For each change, What changed? and Who/what is directly affected?
 
-  Compare the frames in order and identify any visible changes
-  (such as movement, physical contact, someone approaching, pushing, or falling).
-
-  Focus only on clearly observable actions and interactions.
-
-  Important rules:
-
-  Base your description only on visible evidence.
-
-  Avoid speculating about events that are not clearly shown.
-
-  Do not assume causes that cannot be seen.
-
-  Finally, write a 5–8 sentence description of what happens in the scene.
-  Do not mention frames or images in the final description.
-
-# Analyze sequential frames from the same video.
-
-# Describe only what is clearly visible. If something is unclear, do not describe it.
-# Do not infer intent, cause, or unseen actions.
-
-# Write 5–7 short sentences in strict temporal order.
-# Each sentence must describe one visible step.
-
-# Focus on people, object interactions, and visible changes over time.
+  - Describe actions in sequence.
+  - Include brief transitions between actions, objects, and people if visible.
+  - Do not add details that the frame does not support directly.
+  Since frames can be sampled infrequently, we describe only the clearly marked behavior.
+  Do not skip intermediate visible actions.
+  Write 5 to 8 sentences describing this entire frame in order.
+  

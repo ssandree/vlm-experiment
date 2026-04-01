@@ -7,7 +7,7 @@
 
 | 구분 | 내용 |
 |------|------|
-| **Dataset** | `anomaly_cctv`, `ucfcrime_subset`, `image_only`, `image_multi`, `video_only` (config + loader) |
+| **Dataset** | `anomaly_cctv`, `ucfcrime_subset`, `image_only`, `image_multi`, `video_only`, `video_image_multi` (config + loader/pipeline) |
 | **입력 전략** | `identity`, `multi_image`, `top_right_crop` (image) / `multi`, `grid_no_resize`, `image_strip` (video aggregation) |
 | **Video sampling** | `uniform`, `fps_sampling`, `segment_aware`, `manual`, `middle` |
 
@@ -20,7 +20,8 @@ vlm_experiment/
 │   ├── ucfcrime_subset.yaml
 │   ├── image_only.yaml
 │   ├── image_multi.yaml
-│   └── video_only.yaml
+│   ├── video_only.yaml
+│   └── video_image_multi.yaml
 ├── data/
 │   ├── loader/experiment_loaders.py   # UCFCrimeSubsetEvalLoader, anomaly_cctv_loader, image_only_loader, video_only_loader
 │   ├── input_strategies/              # base, multi_image, image_merge, top_right_crop

@@ -5,3 +5,20 @@ system_prompt: |
 
 user_prompt: |
   Describe what is happening in the image.
+
+  - Briefly describe visible people, objects, and their positions in each frame.
+  - Compare frames in order and identify clear changes in:
+    - position (movement, approaching, distancing)
+    - physical contact (start, stop, continuation)
+    - posture (standing, bending, falling)
+  - Focus only on clearly observable actions; if uncertain, state that it is unclear.
+  - Describe changes as a continuous sequence, not isolated observations.
+
+  Important rules:
+  - Do not infer intent, cause, or unseen actions.
+  - Do not assume events beyond what is visible.
+  - Prefer "appears to" or "unclear" when evidence is ambiguous.
+
+  Finally:
+  Write a 5–8 sentence description of the overall sequence as a continuous event.
+  Do not mention frames or images.
