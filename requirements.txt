@@ -9,4 +9,4 @@ tqdm
 opencv-python
 scikit-image
 pycocotools
-ultralytics
+ultralytics 

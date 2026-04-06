@@ -7,10 +7,11 @@
 # 모델 선택
 # ------------------------------------------------------------
 # 사용 예시:
-# - qwen3_vl_8b
+# - qwen3_vl_8b          서버(HF 캐시 스냅샷 경로, configs/model/qwen3_vl_8b.yaml)
+# - qwen3_vl_8b_local    로컬(한 폴더에 직접 다운로드, qwen3_vl_8b_local.yaml)
 # - qwen3_vl_32b
 # ------------------------------------------------------------
-model: qwen3_vl_8b 
+model: qwen3_vl_8b_local
 
 # ------------------------------------------------------------
 # Task 선택
@@ -30,7 +31,7 @@ task: captioning
 # image_video_prompt
 # ------------------------------------------------------------
 prompt:
-  name: image_video_prompt
+  name: captioning_prompt
 
 # ------------------------------------------------------------
 # 데이터셋 선택 (dataset name)
@@ -41,7 +42,7 @@ prompt:
 # video+image: video_image_multi (run_video_image_inference — video.input_mode full이면 네이티브 비디오 + 이미지)
 # ------------------------------------------------------------
 dataset:
-  name: video_image_multi
+  name: image_only
 
 # ------------------------------------------------------------
 # Video 설정

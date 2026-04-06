@@ -1,0 +1,15 @@
+# 로컬 PC: hub 캐시 트리 없이 한 폴더에 직접 받은 경우
+# 예: C:/vlm_models/Qwen3-VL-8B-Instruct/{config.json, model-*.safetensors, ...}
+# model_root 는 configs/paths.local.yaml 등에서 C:/vlm_models/ 로 두면
+# resolved_root = C:/vlm_models/Qwen3-VL-8B-Instruct
+
+name: Qwen3-VL-8B-Instruct
+root: Qwen3-VL-8B-Instruct
+
+precision:
+  dtype: float16
+
+generation:
+  max_new_tokens: 420
+  do_sample: false
+  repetition_penalty: 1.1

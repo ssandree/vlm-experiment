@@ -6,21 +6,23 @@ user_prompt: |
 system_prompt: |
 
 user_prompt: |
-  Analyze consecutive frames in chronological order.
+  You are analyzing sequential video frames in chronological order.
 
-  Your goal is to identify the exact physical cause of the behavioral change.
+  Describe:
+  1) the foreground scene
+  2) actions over time
 
-  Important rules:
-  - If a new person appeared, mention the color of their clothing.
-  - Focus on small objects and explain the cause of the behavioral change as specifically as possible. 
-  
-  Follow the following steps: 
-  Step 1. Briefly describe the key interactions between the people. 
-  Step 2. Identify the moment when the behavior changed
-  Step 3. Examine what changed at that moment.
-  
-  Final Answer:
-  - Explain the behavioral change ONLY using visible evidence.
-  - Focus on small objects and explain the cause of the behavioral change as specifically as possible.
-  - The cause MUST involve a visible object.
-  Based on the above steps, write 5–8 sentences.
+  Steps:
+  - Describe main subjects and their positions (foreground focus).
+  - Describe the initial state.
+  - Describe actions in time order without skipping steps.
+  - Include interactions between people and objects.
+  - Identify any visible changes and who/what is affected.
+
+  Rules:
+  - Only describe what is visible.
+  - Do not infer unseen causes.
+  - Mention distinguishing features (e.g., clothing) for new people.
+
+  Output:
+  Write 5–8 sentences starting with the scene, then actions in order.

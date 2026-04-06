@@ -29,6 +29,13 @@ vlm_experiment/
 └── README.md
 ```
 
+## 로컬 PC에서 실행 (Windows 등)
+
+- **경로**: 저장소 루트에서 `configs/paths.local.example.yaml`을 `configs/paths.local.yaml`로 복사한 뒤 `model_root` / `datasets_root`를 본인 환경에 맞게 수정합니다. 이 파일은 `.gitignore`에 포함되어 서버 설정과 섞이지 않습니다.
+- **우선순위**: 환경 변수 `VLM_PATHS_FILE`(YAML 경로) → `configs/paths.local.yaml`(존재 시) → `configs/paths.yaml`(서버 기본값).
+- **데이터**: `test_dataset`의 경로는 `datasets_root` 기준 상대 경로로 해석됩니다. 서버의 `Classification_DB` 등과 같은 트리를 로컬 드라이브에 두면 `image_multi.yaml` 등을 고치지 않아도 됩니다.
+- **모델(Qwen3-VL-8B)**: 서버는 HF 캐시 형태(`models--…/snapshots/…`)를 쓰는 `configs/model/qwen3_vl_8b.yaml`과 `experiment.yaml`의 `model: qwen3_vl_8b` 조합이 맞습니다. 로컬에서 `C:/vlm_models/Qwen3-VL-8B-Instruct/`처럼 한 폴더에만 받았다면 `configs/model/qwen3_vl_8b_local.yaml`을 쓰고 `experiment.yaml`에서 `model: qwen3_vl_8b_local`로 바꿉니다.
+
 ## vlm_system과 연동
 
 - **실험 실행**: `vlm_system` 루트에서 실행할 때, `vlm_system` 쪽 코드가 `anomaly_cctv` / `ucfcrime_subset` / `segment_aware` 사용 시 **vlm_experiment** 패키지에서 해당 구현을 import하도록 되어 있으면 됩니다.

@@ -1,7 +1,8 @@
 # configs/model/qwen3_vl_8b.yaml
+# 서버: HuggingFace hub 캐시 레이아웃(models--*/snapshots/<hash>)
+# 로컬에서 폴더 한 개에 직접 받았다면 qwen3_vl_8b_local.yaml + experiment 의 model 변경
 
 name: Qwen3-VL-8B-Instruct
-# root: Qwen3-VL-8B-Instruct   # model_root 기준 상대경로
 root: "Qwen3-VL-8B-Instruct/models--Qwen--Qwen3-VL-8B-Instruct/snapshots/0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
 
 precision:

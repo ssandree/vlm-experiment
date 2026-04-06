@@ -14,8 +14,14 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict, List
 
+# torch/transformers 는 build_vlm() 호출 시에만 로드 (model_factory 지연 import).
+print("[run_multi_image_inference] import: configs…", flush=True)
 from configs.config_resolver import ConfigResolver
+
+print("[run_multi_image_inference] import: model_factory (얇음·torch 아직 안 올림)", flush=True)
 from models.model_factory import build_vlm
+
+print("[run_multi_image_inference] import: loader / pipeline…", flush=True)
 from data.loader.loader_factory import get_dataloader
 from data.input_strategies.build_input_strategy import build_input_strategy
 from pipelines.run_model import run_model_multi_image
@@ -31,6 +37,7 @@ def run_multi_image_inference(
     image_multi 데이터셋으로 그룹 단위 multi-image 추론 수행.
     각 그룹(여러 이미지) → 하나의 추론 결과.
     """
+    print(f"[run_multi_image_inference] ConfigResolver: {experiment_path}", flush=True)
     cfg = ConfigResolver(experiment_path)
 
     if cfg.resolved_dataset.get("mode") != "image_multi":
@@ -45,7 +52,13 @@ def run_multi_image_inference(
             f"run_multi_image_inference supports captioning, vqa only. Got: {task_name}"
         )
 
+    print(
+        "[run_multi_image_inference] VLM 로드 시작 — torch/transformers 로딩 후 디스크→GPU. "
+        "int8(bitsandbytes)는 주로 VRAM 절약·추론용이며, safetensors 전체 읽기는 fp16과 비슷하게 걸릴 수 있음",
+        flush=True,
+    )
     vlm = build_vlm(cfg.model_cfg, cfg.runtime_cfg)
+    print("[run_multi_image_inference] 데이터로더 구성", flush=True)
     loader = get_dataloader(dataset_cfg=cfg.resolved_dataset)
 
     prompt_cfg = cfg.prompt_cfg

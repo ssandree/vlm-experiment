@@ -1,5 +1,7 @@
 import gc
 import os
+from pathlib import Path
+
 import torch
 import torch.distributed as dist
 from transformers import AutoProcessor, AutoModelForImageTextToText
@@ -65,7 +67,17 @@ def load_qwen_model(model_cfg: dict, runtime_cfg: dict):
 
     precision_cfg = model_cfg.get("precision", {})
 
-    pretrained_path = model_cfg["resolved_root"]
+    pretrained_path = Path(model_cfg["resolved_root"]).expanduser().resolve()
+    if not pretrained_path.is_dir():
+        raise FileNotFoundError(
+            "모델 폴더를 찾을 수 없습니다. Hugging Face는 존재하지 않는 경로를 "
+            "Hub repo 이름으로 잘못 해석해 Repo id 검증 오류를 냅니다.\n"
+            f"  기대 경로: {pretrained_path}\n"
+            "  확인: configs/paths.local.yaml 의 model_root, configs/model/*.yaml 의 root 가 "
+            "config.json 이 있는 스냅샷(또는 모델) 디렉터리를 가리키는지, "
+            "Windows 에서 YAML 경로는 C:/path/ 처럼 슬래시를 쓰세요."
+        )
+    pretrained_path = str(pretrained_path)
     print(f"[Model Load] Using LOCAL model: {pretrained_path}")
 
     dtype_str = precision_cfg.get("dtype", "float16")

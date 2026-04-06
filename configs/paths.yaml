@@ -1,4 +1,4 @@
-# 서버 머신 기준 절대 경로 (모델 캐시·데이터셋 루트)
+# 서버 기본값. 로컬은 configs/paths.local.yaml 을 두거나 VLM_PATHS_FILE 로 덮어씁니다.
 paths:
   model_root: /data1/vailab02_dir/vlm_models/
   datasets_root: /data1/vailab02_dir

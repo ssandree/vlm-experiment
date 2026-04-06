@@ -1,12 +1,38 @@
+import os
 from pathlib import Path
+
 from utils.load_yaml import load_yaml
+
+_CONFIG_DIR = Path(__file__).resolve().parent
+_REPO_ROOT = _CONFIG_DIR.parent
+
+
+def _resolve_paths_yaml_path() -> Path:
+    """
+    우선순위: 환경변수 VLM_PATHS_FILE → configs/paths.local.yaml(존재 시) → configs/paths.yaml
+    상대 경로는 저장소 루트 기준으로 해석합니다.
+    """
+    env = os.environ.get("VLM_PATHS_FILE", "").strip()
+    if env:
+        p = Path(env)
+        return p if p.is_absolute() else (_REPO_ROOT / p).resolve()
+    local = _CONFIG_DIR / "paths.local.yaml"
+    if local.is_file():
+        return local
+    return _CONFIG_DIR / "paths.yaml"
 
 
 class ConfigResolver:
     def __init__(self, experiment_path: str):
         self.exp_cfg = load_yaml(experiment_path)
 
-        self.paths_cfg = load_yaml("configs/paths.yaml")
+        paths_file = _resolve_paths_yaml_path()
+        if not paths_file.is_file():
+            raise FileNotFoundError(
+                f"Paths config not found: {paths_file}. "
+                "Set VLM_PATHS_FILE or add configs/paths.local.yaml (see paths.local.example.yaml)."
+            )
+        self.paths_cfg = load_yaml(str(paths_file))
         self.model_name = self.exp_cfg["model"]
         dataset_val = self.exp_cfg["dataset"]
         if isinstance(dataset_val, dict):
@@ -123,25 +149,13 @@ class ConfigResolver:
         }
 
     def _load_dataset_cfg(self, dataset_name: str) -> dict:
-        """
-        test_dataset config를 우선 현재 프로젝트의 configs/test_dataset 에서 찾고,
-        없으면 /home/vailab02/vlm_experiment/configs/test_dataset/ 에서 찾는다.
-        """
-        local_path = Path("configs/test_dataset") / f"{dataset_name}.yaml"
-        if local_path.exists():
+        """저장소 루트 기준 configs/test_dataset/{name}.yaml"""
+        local_path = _REPO_ROOT / "configs/test_dataset" / f"{dataset_name}.yaml"
+        if local_path.is_file():
             return load_yaml(str(local_path))
 
-        exp_path = (
-            Path("/home/vailab02/vlm_experiment/configs/test_dataset")
-            / f"{dataset_name}.yaml"
-        )
-        if exp_path.exists():
-            return load_yaml(str(exp_path))
-
         raise FileNotFoundError(
-            f"Dataset config for '{dataset_name}' not found in "
-            f"'configs/test_dataset/' or "
-            f"'/home/vailab02/vlm_experiment/configs/test_dataset/'."
+            f"Dataset config for '{dataset_name}' not found: {local_path}"
         )
 
     def _resolve_paths(self):

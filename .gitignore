@@ -14,6 +14,9 @@ third_party/
 # Outputs (experiment artifacts)
 outputs/
 
+# Local machine paths (override configs/paths.yaml)
+configs/paths.local.yaml
+
 # Environment
 .env
 .venv/
